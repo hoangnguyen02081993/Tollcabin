@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
 using System.Runtime.CompilerServices;
@@ -341,7 +341,7 @@ namespace Tollcabin
             this.SuspendLayout();
             this.spLed.BaudRate = 2400;
             this.spLed.PortName = "COM2";
-            // Hoang comment this.pbSerialPort.Image = Resources.SerialPort;
+            this.pbSerialPort.Image = Properties.Resources.SerialPort;
             Control arg_89_0 = this.pbSerialPort;
             Point location = new Point(4, 4);
             arg_89_0.Location = location;

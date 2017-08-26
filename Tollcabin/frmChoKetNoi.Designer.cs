@@ -64,7 +64,7 @@ namespace Tollcabin
             this.ClientSize = new Size(945, 619);
             this.Controls.Add(this.Label1);
             this.FormBorderStyle = FormBorderStyle.None;
-            // Hoang comment this.Icon = (Icon)componentResourceManager.GetObject("$this.Icon");
+            this.Icon = System.Drawing.Icon.FromHandle(Properties.Resources.ico.GetHicon());
             this.Name = "frmChoKetNoi";
             this.Text = "frmChoKetNoi";
             this.WindowState = FormWindowState.Maximized;

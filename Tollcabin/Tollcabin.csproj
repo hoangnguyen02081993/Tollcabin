@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Tollcabin</RootNamespace>
     <AssemblyName>Tollcabin</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <PublishUrl>publish\</PublishUrl>
@@ -27,6 +27,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -46,6 +47,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ico.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AForge.Video.FFMPEG">
@@ -148,6 +152,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -173,6 +178,39 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="image\Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="image\ketnoimang.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="image\LanDong.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="image\LanMo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="image\BarierRaDong.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="image\BarierRaMo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="image\test.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="image\Employee.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="image\SerialPort.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="image\ico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ico.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

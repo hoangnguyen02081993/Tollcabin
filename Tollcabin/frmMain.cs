@@ -14,7 +14,7 @@ using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+
 using System.Windows.Forms;
 using Tollcabin.My;
 namespace Tollcabin
@@ -1181,7 +1181,7 @@ namespace Tollcabin
             this.tssNhanVien.BorderSides = (ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Right);
             this.tssNhanVien.Font = new Font("Tahoma", 12f, FontStyle.Bold, GraphicsUnit.Point, 0);
             this.tssNhanVien.ForeColor = Color.Black;
-            // Hoang comment this.tssNhanVien.Image = (Image)componentResourceManager.GetObject("tssNhanVien.Image");
+            this.tssNhanVien.Image = Properties.Resources.Employee;
             this.tssNhanVien.Name = "tssNhanVien";
             ToolStripItem arg_85E_0 = this.tssNhanVien;
             size = new Size(631, 27);
@@ -1213,7 +1213,7 @@ namespace Tollcabin
             this.ToolStripStatusLabel1.BorderSides = ToolStripStatusLabelBorderSides.Left;
             this.ToolStripStatusLabel1.Font = new Font("Tahoma", 12f, FontStyle.Bold, GraphicsUnit.Point, 0);
             this.ToolStripStatusLabel1.ForeColor = Color.Black;
-            // Hoang comment this.ToolStripStatusLabel1.Image = (Image)componentResourceManager.GetObject("ToolStripStatusLabel1.Image");
+            this.ToolStripStatusLabel1.Image = Properties.Resources.test;
             this.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1";
             ToolStripItem arg_A29_0 = this.ToolStripStatusLabel1;
             size = new Size(90, 27);
@@ -1356,7 +1356,7 @@ namespace Tollcabin
             this.pbPhone.TabIndex = 146;
             this.pbPhone.TabStop = false;
             this.pbBarrer.Anchor = (AnchorStyles.Top | AnchorStyles.Right);
-            // Hoang comment this.pbBarrer.Image = (Image)componentResourceManager.GetObject("pbBarrer.Image");
+            this.pbBarrer.Image = Properties.Resources.BarierRaDong;
             Control arg_1108_0 = this.pbBarrer;
             location = new Point(1210, 0);
             arg_1108_0.Location = location;
@@ -1368,7 +1368,7 @@ namespace Tollcabin
             this.pbBarrer.TabIndex = 131;
             this.pbBarrer.TabStop = false;
             this.pbTrangThaiLan.Anchor = (AnchorStyles.Top | AnchorStyles.Right);
-            // Hoang comment this.pbTrangThaiLan.Image = (Image)componentResourceManager.GetObject("pbTrangThaiLan.Image");
+            this.pbTrangThaiLan.Image = Properties.Resources.LanDong;
             Control arg_1198_0 = this.pbTrangThaiLan;
             location = new Point(1158, 0);
             arg_1198_0.Location = location;
@@ -1381,7 +1381,7 @@ namespace Tollcabin
             this.pbTrangThaiLan.TabStop = false;
             this.pbTrangThaiMang.Anchor = (AnchorStyles.Top | AnchorStyles.Right);
             this.pbTrangThaiMang.BackColor = Color.White;
-            // Hoang comment this.pbTrangThaiMang.Image = (Image)componentResourceManager.GetObject("pbTrangThaiMang.Image");
+            this.pbTrangThaiMang.Image = Properties.Resources.ketnoimang;
             Control arg_1238_0 = this.pbTrangThaiMang;
             location = new Point(1262, 0);
             arg_1238_0.Location = location;
@@ -1393,7 +1393,7 @@ namespace Tollcabin
             this.pbTrangThaiMang.TabIndex = 130;
             this.pbTrangThaiMang.TabStop = false;
             this.pbClose.Anchor = (AnchorStyles.Top | AnchorStyles.Right);
-            // Hoang comment this.pbClose.Image = (Image)componentResourceManager.GetObject("pbClose.Image");
+            this.pbClose.Image = Properties.Resources.Close;
             Control arg_12C8_0 = this.pbClose;
             location = new Point(1314, 0);
             arg_12C8_0.Location = location;
@@ -1585,7 +1585,7 @@ namespace Tollcabin
             this.Controls.Add(this.pbAnhXeVaoLan);
             this.ForeColor = Color.Black;
             this.FormBorderStyle = FormBorderStyle.None;
-            // Hoang comment this.Icon = (Icon)componentResourceManager.GetObject("$this.Icon");
+            this.Icon = System.Drawing.Icon.FromHandle(Properties.Resources.ico.GetHicon());;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmMain";
@@ -2086,7 +2086,7 @@ namespace Tollcabin
             {
                 this.Controller.MoLan = true;
                 this.UcComPort.spLed_LanMo = true;
-                // Hoang comment this.pbTrangThaiLan.Image = Resources.LanMo;
+                this.pbTrangThaiLan.Image = Properties.Resources.LanMo;
                 this.FlagUuTienDoan = false;
                 this.FlagUuTienLuot = false;
             }
@@ -2094,7 +2094,7 @@ namespace Tollcabin
             {
                 this.Controller.MoLan = false;
                 this.UcComPort.spLed_LanMo = false;
-                // Hoang comment this.pbTrangThaiLan.Image = Resources.Landong;
+                this.pbTrangThaiLan.Image = Properties.Resources.LanDong;
                 this.Controller.MoLan = false;
                 this.FlagUuTienDoan = false;
                 this.FlagUuTienLuot = false;
@@ -2108,7 +2108,7 @@ namespace Tollcabin
                 this.UcComPort.spLed_LanMo = true;
                 this.Controller.OpenBarrier = false;
                 this.Controller.PhanLoaiXe = 0;
-                // Hoang comment this.pbBarrer.Image = Resources.BarierRaDong;
+                this.pbBarrer.Image = Properties.Resources.BarierRaDong;
                 this.ResetForm();
                 this.pnStatusCar1SetColor(this.HangDoiXeVaoTram.CarFrontStatus);
                 this.pnStatusCar2SetColor(this.HangDoiXeVaoTram.CarRearStatus);
@@ -2501,7 +2501,7 @@ namespace Tollcabin
             this.lbThongTinVeSet(strThongTinVe);
             this.lbGiaVeSet(strGiaVe);
             this.Controller.OpenBarrier = true;
-            // Hoang comment this.pbBarrer.Image = Resources.BarierRaMo;
+            this.pbBarrer.Image = Properties.Resources.BarierRaMo;
             this.Controller.PhanLoaiXe = PhanLoaiXe;
             this.tslbThongTin.Text = "Barrier mở mời xe qua";
         }
@@ -2509,7 +2509,7 @@ namespace Tollcabin
         private void CloseBarrier()
         {
             this.Controller.OpenBarrier = false;
-            // Hoang comment this.pbBarrer.Image = Resources.BarierRaDong;
+            this.pbBarrer.Image = Properties.Resources.BarierRaDong;
         }
 
         private void ResetSizeVideo()
@@ -2892,7 +2892,7 @@ namespace Tollcabin
             {
                 this.Controller.MoLan = true;
                 this.UcComPort.spLed_LanMo = true;
-                // Hoang comment this.pbTrangThaiLan.Image = Resources.LanMo;
+                this.pbTrangThaiLan.Image = Properties.Resources.LanMo;
                 this.FlagUuTienDoan = false;
                 this.FlagUuTienLuot = false;
             }
@@ -2900,7 +2900,7 @@ namespace Tollcabin
             {
                 this.Controller.MoLan = false;
                 this.UcComPort.spLed_LanMo = false;
-                // Hoang comment this.pbTrangThaiLan.Image = Resources.Landong;
+                this.pbTrangThaiLan.Image = Properties.Resources.LanDong;
                 this.Controller.MoLan = false;
                 this.FlagUuTienDoan = false;
                 this.FlagUuTienLuot = false;
@@ -2914,7 +2914,7 @@ namespace Tollcabin
                 this.UcComPort.spLed_LanMo = true;
                 this.Controller.OpenBarrier = false;
                 this.Controller.PhanLoaiXe = 0;
-                // Hoang comment this.pbBarrer.Image = Resources.BarierRaDong;
+                this.pbBarrer.Image = Properties.Resources.BarierRaDong;
                 this.ResetForm();
                 this.pnStatusCar1SetColor(this.HangDoiXeVaoTram.CarFrontStatus);
                 this.pnStatusCar2SetColor(this.HangDoiXeVaoTram.CarRearStatus);

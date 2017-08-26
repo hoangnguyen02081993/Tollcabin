@@ -6,7 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 using System.Windows.Forms;
 using CaptureOcx;
 using Encryption;
@@ -2838,7 +2838,7 @@ namespace Tollcabin
             this.Controls.Add(this.GroupBox2);
             this.Controls.Add(this.GroupBox1);
             this.Controls.Add(this.Label13);
-            this.Icon = (Icon)componentResourceManager.GetObject("$this.Icon");
+            this.Icon = System.Drawing.Icon.FromHandle(Properties.Resources.ico.GetHicon());;
             this.MaximizeBox = false;
             this.Name = "frmConfig";
             this.StartPosition = FormStartPosition.CenterScreen;
