@@ -1,0 +1,5 @@
+E:\D\git\source\Tollcabin\CaptureTollCabinLib\bin\Debug\CaptureTollCabinLib.dll
+E:\D\git\source\Tollcabin\CaptureTollCabinLib\bin\Debug\CaptureTollCabinLib.pdb
+E:\D\git\source\Tollcabin\CaptureTollCabinLib\obj\Debug\CaptureTollCabinLib.csprojResolveAssemblyReference.cache
+E:\D\git\source\Tollcabin\CaptureTollCabinLib\obj\Debug\CaptureTollCabinLib.dll
+E:\D\git\source\Tollcabin\CaptureTollCabinLib\obj\Debug\CaptureTollCabinLib.pdb

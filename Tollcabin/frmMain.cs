@@ -1,4 +1,5 @@
 ﻿using Capture2014;
+using CaptureTollCabinLib;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using System;
@@ -68,7 +69,7 @@ namespace Tollcabin
         private int PhanLoaiXeVuaQua;
 
         [AccessedThroughProperty("_ChupHinhXe")]
-        private VideoCapture __ChupHinhXe;
+        private AxisCapture __ChupHinhXe;
 
         private string _FileNameAnhXe;
 
@@ -100,7 +101,7 @@ namespace Tollcabin
             }
         }
 
-        public virtual VideoCapture _ChupHinhXe
+        public virtual AxisCapture _ChupHinhXe
         {
             [DebuggerNonUserCode]
             get
@@ -111,15 +112,10 @@ namespace Tollcabin
             [MethodImpl(MethodImplOptions.Synchronized)]
             set
             {
-                VideoCapture.CaptureHandler value2 = new VideoCapture.CaptureHandler(this.LuuHinhAnh);
-                if (this.__ChupHinhXe != null)
-                {
-                    this.__ChupHinhXe.CaptureComplete -= value2;
-                }
                 this.__ChupHinhXe = value;
                 if (this.__ChupHinhXe != null)
                 {
-                    this.__ChupHinhXe.CaptureComplete += value2;
+                    this.__ChupHinhXe.CaptureComplete += LuuHinhAnh;
                 }
             }
         }
@@ -258,8 +254,9 @@ namespace Tollcabin
                 this.ResetForm();
                 try
                 {
-                    this._ChupHinhXe = new VideoCapture();
-                    this._ChupHinhXe.InitDevice(this.pnVideo);
+                    this._ChupHinhXe = new AxisCapture();
+                    // Hoang example
+                    this._ChupHinhXe.InitDevice(this.pnVideo, "10.0.0.1");
                 }
                 catch (Exception expr_240)
                 {
@@ -1521,7 +1518,7 @@ namespace Tollcabin
         {
             if (this._flagChupHinh | (this._VideoXeQua.FlagLuuVideo & this._VideoXeQua.MaxFrame))
             {
-                this._ChupHinhXe.ChupHinh();
+                this._ChupHinhXe.Capture();
             }
         }
 
