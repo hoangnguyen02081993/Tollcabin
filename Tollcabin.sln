@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tollcabin", "Tollcabin\Tollcabin.csproj", "{57F0E289-160C-4C46-8E0C-220E83E3DA1B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaptureTollCabinLib", "CaptureTollCabinLib\CaptureTollCabinLib.csproj", "{57BA8699-802E-4177-83CF-4EBFE8F6AACB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxisCaptureManager", "AxisCaptureManager\AxisCaptureManager.csproj", "{69DF43D8-57CB-4315-9F19-287DE004D72B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +23,15 @@ Global
 		{57BA8699-802E-4177-83CF-4EBFE8F6AACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57BA8699-802E-4177-83CF-4EBFE8F6AACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57BA8699-802E-4177-83CF-4EBFE8F6AACB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69DF43D8-57CB-4315-9F19-287DE004D72B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69DF43D8-57CB-4315-9F19-287DE004D72B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69DF43D8-57CB-4315-9F19-287DE004D72B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69DF43D8-57CB-4315-9F19-287DE004D72B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7E0ED280-F972-46D8-AC9E-14FCD60913F6}
 	EndGlobalSection
 EndGlobal

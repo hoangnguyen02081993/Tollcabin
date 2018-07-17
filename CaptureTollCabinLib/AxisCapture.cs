@@ -17,8 +17,15 @@ namespace CaptureTollCabinLib
 
         private Control controlPanel;
         private string cameraIp { set; get; }
-
+        
         private Mutex lockMute = new Mutex();
+
+        private bool IsManager { set; get; }
+
+        public AxisCapture(bool isManager = false)
+        {
+            this.IsManager = isManager;
+        }
 
         private void CaptureDone(Bitmap GetBmp)
         {
@@ -45,7 +52,26 @@ namespace CaptureTollCabinLib
 
         private void DownloadImageFromUrl()
         {
-            if(!Monitor.TryEnter(lockMute))
+            if (!this.IsManager)
+            {
+                using (var globalMutex = new Mutex(false, "Global\\{{2671848c-26d4-4ab1-942f-103f34a3fbbf}}"))
+                {
+                    try
+                    {
+                        if (Monitor.TryEnter(globalMutex))
+                        {
+                            Monitor.Exit(lockMute);
+                            return;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //todo log
+                    }
+                }
+            }
+
+            if (!Monitor.TryEnter(lockMute))
             {
                 return;
             }
