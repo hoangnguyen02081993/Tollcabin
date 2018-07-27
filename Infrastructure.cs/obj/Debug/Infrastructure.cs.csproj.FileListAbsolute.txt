@@ -1,0 +1,5 @@
+E:\D\git\source\Tollcabin\Infrastructure.cs\bin\Debug\Infrastructure.cs.dll
+E:\D\git\source\Tollcabin\Infrastructure.cs\bin\Debug\Infrastructure.cs.pdb
+E:\D\git\source\Tollcabin\Infrastructure.cs\obj\Debug\Infrastructure.cs.csprojResolveAssemblyReference.cache
+E:\D\git\source\Tollcabin\Infrastructure.cs\obj\Debug\Infrastructure.cs.dll
+E:\D\git\source\Tollcabin\Infrastructure.cs\obj\Debug\Infrastructure.cs.pdb

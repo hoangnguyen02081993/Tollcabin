@@ -36,8 +36,8 @@ namespace AxisCaptureManager
         {
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Icon = System.Drawing.Icon.FromHandle(Properties.Resources.video.GetHicon());
-            this.ntfIco.Icon = System.Drawing.Icon.FromHandle(Properties.Resources.video.GetHicon());
+            this.Icon = System.Drawing.Icon.FromHandle(Properties.Resources.Logo_TC.GetHicon());
+            this.ntfIco.Icon = System.Drawing.Icon.FromHandle(Properties.Resources.Logo_TC.GetHicon());
             this.axisCapture = new AxisCapture(true);
 
             this.configManager = new ConfigManager();

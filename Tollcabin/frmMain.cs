@@ -1,5 +1,5 @@
-﻿using Capture2014;
-using CaptureTollCabinLib;
+﻿using CaptureTollCabinLib;
+using Infrastructure.intefaces;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using System;
@@ -11,6 +11,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -69,13 +70,13 @@ namespace Tollcabin
         private int PhanLoaiXeVuaQua;
 
         [AccessedThroughProperty("_ChupHinhXe")]
-        private AxisCapture __ChupHinhXe;
+        private IVideoCapture __ChupHinhXe;
 
         private string _FileNameAnhXe;
 
         private bool _flagChupHinh;
 
-
+        private ConfigAxis configAxis = null;
 
         public virtual VoicePhone phone
         {
@@ -101,7 +102,7 @@ namespace Tollcabin
             }
         }
 
-        public virtual AxisCapture _ChupHinhXe
+        public virtual IVideoCapture _ChupHinhXe
         {
             [DebuggerNonUserCode]
             get
@@ -254,9 +255,19 @@ namespace Tollcabin
                 this.ResetForm();
                 try
                 {
-                    this._ChupHinhXe = new AxisCapture();
-                    // Hoang example
-                    this._ChupHinhXe.InitDevice(this.pnVideo, "10.0.0.1");
+                    this.configAxis = new ConfigAxis();
+                    this.configAxis.Load();
+                    if(this.CheckNetWork(configAxis.CameraIp))
+                    {
+                        this._ChupHinhXe = new AxisCapture();
+                        // Hoang example
+                        this._ChupHinhXe.InitDevice(this.pnVideo, this.configAxis.CameraIp);
+                    }
+                    else
+                    {
+                        this._ChupHinhXe = new VideoCapture();
+                        this._ChupHinhXe.InitDevice(this.pnVideo);
+                    }
                 }
                 catch (Exception expr_240)
                 {
@@ -1102,215 +1113,253 @@ namespace Tollcabin
                 {
                     this.tslbThongTin.Text = "Đoàn xe ưu tiên đang qua trạm";
                 }
-                else if (num == 8)
+                else
                 {
-                    this.lbMaVeXeSet(SoVe13Char);
-                    this.FlagUuTienLuot = false;
-                    if (this.FlagUuTienDoan)
+                    if (num == 8)
                     {
-                        this.FlagUuTienDoan = false;
-                        this.CloseBarrier();
-                        this.SoVeUuTienDoan = "";
-                        this.UcComPort.spLed_LanMo = true;
-                        this.tslbThongTin.Text = "Hệ thống sẳn sàng";
-                        this.lbThongTinVeSet("HẾT ƯU TIÊN ĐOÀN");
-                        this.ResetForm();
-                    }
-                    else
-                    {
-                        if (this.HangDoiXeVaoTram.CoXeKhongHopLe)
+                        this.lbMaVeXeSet(SoVe13Char);
+                        this.FlagUuTienLuot = false;
+                        if (this.FlagUuTienDoan)
                         {
-                            xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
+                            this.FlagUuTienDoan = false;
+                            this.CloseBarrier();
+                            this.SoVeUuTienDoan = "";
+                            this.UcComPort.spLed_LanMo = true;
+                            this.tslbThongTin.Text = "Hệ thống sẳn sàng";
+                            this.lbThongTinVeSet("HẾT ƯU TIÊN ĐOÀN");
+                            this.ResetForm();
                         }
-                        this.HangDoiXeVaoTram.Send(true);
-                        if (this.HangDoiXeVaoTram.CoXeKhongHopLe)
+                        else
                         {
-                            this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
-                        }
-                        this.HangDoiXeVaoTram.Send(true);
-                        this.OpenBarrier(0, "ƯU TIÊN ĐOÀN", "");
-                        this.FlagUuTienDoan = true;
-                        this.SoVeUuTienDoan = SoVe13Char;
-                        this.UcComPort.spLed_MoiXeQua_UuTien = true;
-                        this.OpenBarrier(0, "ƯU TIÊN ĐOÀN", "");
-                        if (Operators.CompareString(xeQuaTram.TenHinhXe, ModuleKhaiBaoConst.EnumStrNull.TenHinhXeNull, false) != 0)
-                        {
-                            this.VideoData.TextOutDVR(this.DvrChanel, xeQuaTram.BienSo, xeQuaTram.SoVe, xeQuaTram.PTTT, xeQuaTram.PLVe, xeQuaTram.MSNV, xeQuaTram.TTXeQua);
-                        }
-                    }
-                }
-                else if (num == 6)
-                {
-                    if ((DateAndTime.Now - this.TimeUuTienLuot).TotalSeconds >= 4.0)
-                    {
-                        this.TimeUuTienLuot = DateAndTime.Now;
-                        if (this.HangDoiXeVaoTram.CoXeKhongHopLe)
-                        {
-                            this.lbMaVeXeSet(SoVe13Char);
-                            xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
-                            this.HangDoiXeVaoTram.Send(false);
+                            if (this.HangDoiXeVaoTram.CoXeKhongHopLe)
+                            {
+                                xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
+                            }
+                            this.HangDoiXeVaoTram.Send(true);
+                            if (this.HangDoiXeVaoTram.CoXeKhongHopLe)
+                            {
+                                this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
+                            }
+                            this.HangDoiXeVaoTram.Send(true);
+                            this.OpenBarrier(0, "ƯU TIÊN ĐOÀN", "");
+                            this.FlagUuTienDoan = true;
+                            this.SoVeUuTienDoan = SoVe13Char;
                             this.UcComPort.spLed_MoiXeQua_UuTien = true;
-                            this.OpenBarrier(0, "VÉ MIỄN PHÍ LƯỢT", "");
+                            this.OpenBarrier(0, "ƯU TIÊN ĐOÀN", "");
                             if (Operators.CompareString(xeQuaTram.TenHinhXe, ModuleKhaiBaoConst.EnumStrNull.TenHinhXeNull, false) != 0)
                             {
                                 this.VideoData.TextOutDVR(this.DvrChanel, xeQuaTram.BienSo, xeQuaTram.SoVe, xeQuaTram.PTTT, xeQuaTram.PLVe, xeQuaTram.MSNV, xeQuaTram.TTXeQua);
                             }
-                            this.pnStatusCar1SetColor(this.HangDoiXeVaoTram.CarFrontStatus);
-                            this.pnStatusCar2SetColor(this.HangDoiXeVaoTram.CarRearStatus);
                         }
-                        else
-                        {
-                            this.FlagUuTienLuot = true;
-                            this.SoVeUuTienTienLuot = SoVe13Char;
-                            this.UcComPort.spLed_MoiXeQua_UuTien = true;
-                            this.OpenBarrier(0, "VÉ MIỄN PHÍ LƯỢT", "");
-                        }
-                    }
-                }
-                else if (!this.HangDoiXeVaoTram.CoXe)
-                {
-                    this.TrangThaiPortVao = UcController.TrangThaiPortVao.KhongKetNoi;
-                    this.FlagKiemTraVungTu = true;
-                    this.Controller.KiemTraPortVao = true;
-                    this.tslbThongTin.Text = "Không có xe vào trạm, đang tiến hành kiểm tra vùng từ";
-                }
-                else if (this.HangDoiXeVaoTram.XeChuaRaKhoiVungTu)
-                {
-                    this.tslbThongTin.Text = "Đang bận xử lý, vui lòng quét vé lại sau vài giây";
-                }
-                else
-                {
-                    switch (num)
-                    {
-                        case 1:
-                            {
-                                if (!CSDL.SelectVali(ModuleKhaiBaoConst.StrConnectMain, ModuleKhaiBaoConst.MaNhanVienMain, SoVe13Char, (int)ModuleKhaiBaoConst.LanXeMain, ModuleKhaiBaoConst.TramIdMain))
-                                {
-                                    this.lbThongTinVeSet("VÉ KHÔNG HỢP LỆ");
-                                    return;
-                                }
-                                if (CSDL.SelectVeInVeSuDung(ModuleKhaiBaoConst.StrConnectMain, SoVe13Char))
-                                {
-                                    this.lbThongTinVeSet("VÉ ĐÃ SỬ DỤNG");
-                                    return;
-                                }
-                                long phi = 0L;
-                                long num3 = 0L;
-                                long num4 = 0L;
-                                this.lbMaVeXeSet(SoVe13Char);
-                                CSDL.SelectMenhGiaVe(ModuleKhaiBaoConst.StrConnectMain, Conversions.ToString(num2), ref phi, ref num3, ref num4);
-                                int phanLoaiXeTruoc = this.HangDoiXeVaoTram.PhanLoaiXeTruoc;
-                                if (phanLoaiXeTruoc > 0 && (num2 != phanLoaiXeTruoc & Operators.CompareString(this.VeLuotPhanLoaiTruoc, SoVe13Char, false) != 0))
-                                {
-                                    this.lbThongTinVeSet("VÉ SAI PHÂN LOẠI");
-                                    this.lbBienSoDuoiLanSet(Conversions.ToString(num2));
-                                    this.VeLuotPhanLoaiTruoc = SoVe13Char;
-                                    Thread thread = new Thread(new ThreadStart(this.ChangeColor));
-                                    thread.Start();
-                                    return;
-                                }
-                                this.UcComPort.spLed_MoiXeQua_Phi = Conversions.ToSingle(phi.ToString()).ToString();
-                                this.OpenBarrier(num2, "VÉ SỬ DỤNG MỘT LẦN", "PHÍ :" + Strings.Format(Conversions.ToSingle(phi.ToString()), "#,# VNĐ"));
-                                xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, phi, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
-                                this.HangDoiXeVaoTram.Send(false);
-                                CSDL.InsertVeSuDung(ModuleKhaiBaoConst.StrConnectMain, SoVe13Char);
-                                this.lbPhanLoaiDuoiLan.Text = VeXe.PhanLoaiVe(SoVe13Char).ToString();
-                                this.VeLuotPhanLoaiTruoc = "";
-                                goto IL_7AC;
-                            }
-                        case 2:
-                            {
-                                string text = "";
-                                string str = "";
-                                if (!CSDL.TimBienSoTuVeThang(ModuleKhaiBaoConst.StrConnectMain, SoVe13Char, ref text, ref str))
-                                {
-                                    this.lbThongTinVeSet("VÉ KHÔNG HỢP LỆ");
-                                    return;
-                                }
-                                this.lbMaVeXeSet(SoVe13Char);
-                                xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, text, false);
-                                this.HangDoiXeVaoTram.Send(false);
-                                this.lbPhanLoaiXeDuoiLanSet(Conversions.ToString(VeXe.PhanLoaiVe(SoVe13Char)));
-                                this.UcComPort.spLed_MoiXeQua_VeThang = true;
-                                this.OpenBarrier(num2, "VÉ THÁNG: " + text, "NGÀY HẾT HẠN: " + str);
-                                if (xeQuaTram.TTXeQua == 5)
-                                {
-                                    Thread thread2 = new Thread(new ThreadStart(this.ChangeColor2));
-                                    thread2.Start();
-                                }
-                                this.VeLuotPhanLoaiTruoc = "";
-                                goto IL_7AC;
-                            }
-                        case 3:
-                            {
-                                string text2 = "";
-                                string str2 = "";
-                                if (!CSDL.TimBienSoTuVeThang(ModuleKhaiBaoConst.StrConnectMain, SoVe13Char, ref text2, ref str2))
-                                {
-                                    this.lbThongTinVeSet("VÉ KHÔNG HỢP LỆ");
-                                    return;
-                                }
-                                this.lbMaVeXeSet(SoVe13Char);
-                                xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, text2, false);
-                                this.HangDoiXeVaoTram.Send(false);
-                                this.lbPhanLoaiXeDuoiLanSet(Conversions.ToString(VeXe.PhanLoaiVe(SoVe13Char)));
-                                this.UcComPort.spLed_MoiXeQua_VeQuy = true;
-                                this.OpenBarrier(num2, "VÉ QUÍ: " + text2, "NGÀY HẾT HẠN: " + str2);
-                                if (xeQuaTram.TTXeQua == 5)
-                                {
-                                    Thread thread3 = new Thread(new ThreadStart(this.ChangeColor2));
-                                    thread3.Start();
-                                }
-                                this.VeLuotPhanLoaiTruoc = "";
-                                goto IL_7AC;
-                            }
-                        case 7:
-                            this.lbMaVeXeSet(SoVe13Char);
-                            xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
-                            this.HangDoiXeVaoTram.Send(false);
-                            this.UcComPort.spLed_MoiXeQua_VeToanQuoc = true;
-                            this.OpenBarrier(0, "VÉ TOÀN QUỐC", "");
-                            goto IL_7AC;
-                        case 9:
-                            this.lbMaVeXeSet(SoVe13Char);
-                            xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
-                            this.HangDoiXeVaoTram.Send(false);
-                            this.UcComPort.spLed_MoiXeQua = true;
-                            this.OpenBarrier(0, "VÉ CƯỠNG BỨC", "");
-                            this.VeLuotPhanLoaiTruoc = "";
-                            goto IL_7AC;
-                        case 11:
-                            xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, "", false);
-                            this.OpenBarrier(num2, "ƯU TIÊN NỘI BỘ ", "");
-                            this.UcComPort.spLed_MoiXeQua = true;
-                            return;
-                        case 12:
-                            this.lbMaVeXeSet(SoVe13Char);
-                            xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
-                            this.HangDoiXeVaoTram.Send(false);
-                            this.UcComPort.spLed_MoiXeQua_VeToanQuoc = true;
-                            this.OpenBarrier(0, "VÉ TOÀN QUỐC", "");
-                            goto IL_7AC;
-                    }
-                    this.tslbThongTin.Text = "Vui lòng quét vé lại!";
-                    return;
-                IL_7AC:
-                    this.pnStatusCar1SetColor(this.HangDoiXeVaoTram.CarFrontStatus);
-                    this.pnStatusCar2SetColor(this.HangDoiXeVaoTram.CarRearStatus);
-                    if (Operators.CompareString(xeQuaTram.TenHinhXe, ModuleKhaiBaoConst.EnumStrNull.TenHinhXeNull, false) != 0)
-                    {
-                        this.VideoData.TextOutDVR(this.DvrChanel, xeQuaTram.BienSo, xeQuaTram.SoVe, xeQuaTram.PTTT, xeQuaTram.PLVe, xeQuaTram.MSNV, xeQuaTram.TTXeQua);
                     }
                     else
                     {
-                        this.VideoData.TextOutDVR(this.DvrChanel, "----");
+                        if (num == 6)
+                        {
+                            if ((DateAndTime.Now - this.TimeUuTienLuot).TotalSeconds >= 4.0)
+                            {
+                                this.TimeUuTienLuot = DateAndTime.Now;
+                                if (this.HangDoiXeVaoTram.CoXeKhongHopLe)
+                                {
+                                    this.lbMaVeXeSet(SoVe13Char);
+                                    xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
+                                    this.HangDoiXeVaoTram.Send(false);
+                                    this.UcComPort.spLed_MoiXeQua_UuTien = true;
+                                    this.OpenBarrier(0, "VÉ MIỄN PHÍ LƯỢT", "");
+                                    if (Operators.CompareString(xeQuaTram.TenHinhXe, ModuleKhaiBaoConst.EnumStrNull.TenHinhXeNull, false) != 0)
+                                    {
+                                        this.VideoData.TextOutDVR(this.DvrChanel, xeQuaTram.BienSo, xeQuaTram.SoVe, xeQuaTram.PTTT, xeQuaTram.PLVe, xeQuaTram.MSNV, xeQuaTram.TTXeQua);
+                                    }
+                                    this.pnStatusCar1SetColor(this.HangDoiXeVaoTram.CarFrontStatus);
+                                    this.pnStatusCar2SetColor(this.HangDoiXeVaoTram.CarRearStatus);
+                                }
+                                else
+                                {
+                                    this.FlagUuTienLuot = true;
+                                    this.SoVeUuTienTienLuot = SoVe13Char;
+                                    this.UcComPort.spLed_MoiXeQua_UuTien = true;
+                                    this.OpenBarrier(0, "VÉ MIỄN PHÍ LƯỢT", "");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (!this.HangDoiXeVaoTram.CoXe)
+                            {
+                                this.TrangThaiPortVao = UcController.TrangThaiPortVao.KhongKetNoi;
+                                this.FlagKiemTraVungTu = true;
+                                this.Controller.KiemTraPortVao = true;
+                                this.tslbThongTin.Text = "Không có xe vào trạm, đang tiến hành kiểm tra vùng từ";
+                            }
+                            else
+                            {
+                                if (this.HangDoiXeVaoTram.XeChuaRaKhoiVungTu)
+                                {
+                                    this.tslbThongTin.Text = "Đang bận xử lý, vui lòng quét vé lại sau vài giây";
+                                }
+                                else
+                                {
+                                    switch (num)
+                                    {
+                                        case 1:
+                                            {
+                                                if (!CSDL.SelectVali(ModuleKhaiBaoConst.StrConnectMain, ModuleKhaiBaoConst.MaNhanVienMain, SoVe13Char, (int)ModuleKhaiBaoConst.LanXeMain, ModuleKhaiBaoConst.TramIdMain))
+                                                {
+                                                    this.lbThongTinVeSet("VÉ KHÔNG HỢP LỆ");
+                                                    return;
+                                                }
+                                                if (CSDL.SelectVeInVeSuDung(ModuleKhaiBaoConst.StrConnectMain, SoVe13Char))
+                                                {
+                                                    this.lbThongTinVeSet("VÉ ĐÃ SỬ DỤNG");
+                                                    return;
+                                                }
+                                                long phi = 0L;
+                                                long num3 = 0L;
+                                                long num4 = 0L;
+                                                this.lbMaVeXeSet(SoVe13Char);
+                                                CSDL.SelectMenhGiaVe(ModuleKhaiBaoConst.StrConnectMain, Conversions.ToString(num2), ref phi, ref num3, ref num4);
+                                                int phanLoaiXeTruoc = this.HangDoiXeVaoTram.PhanLoaiXeTruoc;
+                                                if (phanLoaiXeTruoc > 0 && (num2 != phanLoaiXeTruoc & Operators.CompareString(this.VeLuotPhanLoaiTruoc, SoVe13Char, false) != 0))
+                                                {
+                                                    this.lbThongTinVeSet("VÉ SAI PHÂN LOẠI");
+                                                    this.lbBienSoDuoiLanSet(Conversions.ToString(num2));
+                                                    this.VeLuotPhanLoaiTruoc = SoVe13Char;
+                                                    Thread thread = new Thread(new ThreadStart(this.ChangeColor));
+                                                    thread.Start();
+                                                    return;
+                                                }
+                                                this.UcComPort.spLed_MoiXeQua_Phi = Conversions.ToSingle(phi.ToString()).ToString();
+                                                this.OpenBarrier(num2, "VÉ SỬ DỤNG MỘT LẦN", "PHÍ :" + Strings.Format(Conversions.ToSingle(phi.ToString()), "#,# VNĐ"));
+                                                xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, phi, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
+                                                this.HangDoiXeVaoTram.Send(false);
+                                                CSDL.InsertVeSuDung(ModuleKhaiBaoConst.StrConnectMain, SoVe13Char);
+                                                this.lbPhanLoaiDuoiLan.Text = VeXe.PhanLoaiVe(SoVe13Char).ToString();
+                                                this.VeLuotPhanLoaiTruoc = "";
+                                                goto IL_84A;
+                                            }
+
+                                        case 2:
+                                            {
+                                                string text = "";
+                                                string str = "";
+                                                if (!CSDL.TimBienSoTuVeThang(ModuleKhaiBaoConst.StrConnectMain, SoVe13Char, ref text, ref str))
+                                                {
+                                                    this.lbThongTinVeSet("VÉ KHÔNG HỢP LỆ");
+                                                    return;
+                                                }
+                                                this.lbMaVeXeSet(SoVe13Char);
+                                                xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, text, false);
+                                                this.HangDoiXeVaoTram.Send(false);
+                                                this.lbPhanLoaiXeDuoiLanSet(Conversions.ToString(VeXe.PhanLoaiVe(SoVe13Char)));
+                                                this.UcComPort.spLed_MoiXeQua_VeThang = true;
+                                                this.OpenBarrier(num2, "VÉ THÁNG: " + text, "NGÀY HẾT HẠN: " + str);
+                                                if (xeQuaTram.TTXeQua == 5)
+                                                {
+                                                    Thread thread2 = new Thread(new ThreadStart(this.ChangeColor2));
+                                                    thread2.Start();
+                                                }
+                                                this.VeLuotPhanLoaiTruoc = "";
+                                                goto IL_84A;
+                                            }
+
+                                        case 3:
+                                            {
+                                                string text2 = "";
+                                                string str2 = "";
+                                                if (!CSDL.TimBienSoTuVeThang(ModuleKhaiBaoConst.StrConnectMain, SoVe13Char, ref text2, ref str2))
+                                                {
+                                                    this.lbThongTinVeSet("VÉ KHÔNG HỢP LỆ");
+                                                    return;
+                                                }
+                                                this.lbMaVeXeSet(SoVe13Char);
+                                                xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, text2, false);
+                                                this.HangDoiXeVaoTram.Send(false);
+                                                this.lbPhanLoaiXeDuoiLanSet(Conversions.ToString(VeXe.PhanLoaiVe(SoVe13Char)));
+                                                this.UcComPort.spLed_MoiXeQua_VeQuy = true;
+                                                this.OpenBarrier(num2, "VÉ QUÍ: " + text2, "NGÀY HẾT HẠN: " + str2);
+                                                if (xeQuaTram.TTXeQua == 5)
+                                                {
+                                                    Thread thread3 = new Thread(new ThreadStart(this.ChangeColor2));
+                                                    thread3.Start();
+                                                }
+                                                this.VeLuotPhanLoaiTruoc = "";
+                                                goto IL_84A;
+                                            }
+
+                                        case 4:
+                                            {
+                                                string bSXeThangQui = "";
+                                                DateTime dateTime = DateTime.MinValue;
+                                                DateTime dateTime2 = DateTime.MinValue;
+                                                if (!CSDL.xeGiamGia(ModuleKhaiBaoConst.StrConnectMain, SoVe13Char, ref bSXeThangQui, ref dateTime, ref dateTime2))
+                                                {
+                                                    this.lbThongTinVeSet("VÉ KHÔNG HỢP LỆ");
+                                                    return;
+                                                }
+                                                this.lbMaVeXeSet(SoVe13Char);
+                                                xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, bSXeThangQui, false);
+                                                this.HangDoiXeVaoTram.Send(false);
+                                                this.lbPhanLoaiXeDuoiLanSet(Conversions.ToString(VeXe.PhanLoaiVe(SoVe13Char)));
+                                                this.UcComPort.spLed_MoiXeQua_giamGia = true;
+                                                this.OpenBarrier(num2, "VÉ GIẢM GIÁ ", "NGÀY HẾT HẠN: " + dateTime2.ToString("dd/MM/yyyy"));
+                                                this.VeLuotPhanLoaiTruoc = "";
+                                                goto IL_84A;
+                                            }
+
+                                        case 7:
+                                            this.lbMaVeXeSet(SoVe13Char);
+                                            xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
+                                            this.HangDoiXeVaoTram.Send(false);
+                                            this.UcComPort.spLed_MoiXeQua_VeToanQuoc = true;
+                                            this.OpenBarrier(0, "VÉ TOÀN QUỐC", "");
+                                            goto IL_84A;
+
+                                        case 9:
+                                            this.lbMaVeXeSet(SoVe13Char);
+                                            xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
+                                            this.HangDoiXeVaoTram.Send(false);
+                                            this.UcComPort.spLed_MoiXeQua = true;
+                                            this.OpenBarrier(0, "VÉ CƯỠNG BỨC", "");
+                                            this.VeLuotPhanLoaiTruoc = "";
+                                            goto IL_84A;
+
+                                        case 11:
+                                            xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, "", false);
+                                            this.OpenBarrier(num2, "ƯU TIÊN NỘI BỘ ", "");
+                                            this.UcComPort.spLed_MoiXeQua = true;
+                                            return;
+
+                                        case 12:
+                                            this.lbMaVeXeSet(SoVe13Char);
+                                            xeQuaTram = this.HangDoiXeVaoTram.Insert(SoVe13Char, 0L, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false);
+                                            this.HangDoiXeVaoTram.Send(false);
+                                            this.UcComPort.spLed_MoiXeQua_VeToanQuoc = true;
+                                            this.OpenBarrier(0, "VÉ TOÀN QUỐC", "");
+                                            goto IL_84A;
+                                    }
+                                    this.tslbThongTin.Text = "Vui lòng quét vé lại!";
+                                    return;
+                                IL_84A:
+                                    this.pnStatusCar1SetColor(this.HangDoiXeVaoTram.CarFrontStatus);
+                                    this.pnStatusCar2SetColor(this.HangDoiXeVaoTram.CarRearStatus);
+                                    if (Operators.CompareString(xeQuaTram.TenHinhXe, ModuleKhaiBaoConst.EnumStrNull.TenHinhXeNull, false) != 0)
+                                    {
+                                        this.VideoData.TextOutDVR(this.DvrChanel, xeQuaTram.BienSo, xeQuaTram.SoVe, xeQuaTram.PTTT, xeQuaTram.PLVe, xeQuaTram.MSNV, xeQuaTram.TTXeQua);
+                                    }
+                                    else
+                                    {
+                                        this.VideoData.TextOutDVR(this.DvrChanel, "----");
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
-            catch (Exception expr_831)
+            catch (Exception expr_8CF)
             {
-                ProjectData.SetProjectError(expr_831);
-                Exception ex = expr_831;
+                ProjectData.SetProjectError(expr_8CF);
+                Exception ex = expr_8CF;
                 ModuleKhac.SaveError(ex.Message, "XyLyQuetVe");
                 this.tslbThongTin.Text = "Vui lòng quét vé lại!!!";
                 ProjectData.ClearProjectError();
@@ -1544,6 +1593,27 @@ namespace Tollcabin
 
         private void Label3_Click(object sender, EventArgs e)
         {
+        }
+        private bool CheckNetWork(string address)
+        {
+            try
+            {
+                Ping pingSender = new Ping();
+                PingReply reply = pingSender.Send(address);
+
+                if (reply.Status == IPStatus.Success)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

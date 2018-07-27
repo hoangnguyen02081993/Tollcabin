@@ -1009,5 +1009,39 @@ namespace Tollcabin
             }
             return false;
         }
+        public static bool xeGiamGia(string ConnString, string Sove, ref string BienSo, ref DateTime ngayapDung, ref DateTime ngayHetHan)
+        {
+            string cmd = $@"select * from  tblCapVeXeDiaPhuong 
+                            where sove = '{Sove}'
+                                  and ngayApDung <= '{DateAndTime.Now.ToString("yyyy-MM-dd")}'
+                                  and  NgayHetHan >= '{DateAndTime.Now.ToString("yyyy-MM-dd")}'";
+            DataTable dataTable = new DataTable("Result");
+            SqlConnection sqlConnection = new SqlConnection(ConnString);
+            try
+            {
+                sqlConnection.Open();
+                SqlCommand selectCommand = new SqlCommand(cmd, sqlConnection);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(selectCommand);
+                sqlDataAdapter.Fill(dataTable);
+                if (dataTable.Rows.Count > 0)
+                {
+                    BienSo = Conversions.ToString(dataTable.Rows[0]["BienSo"]);
+                    ngayapDung = Conversions.ToDate(dataTable.Rows[0]["ngayApDung"]);
+                    ngayHetHan = Conversions.ToDate(dataTable.Rows[0]["ngayHetHan"]);
+                    return true;
+                }
+                sqlConnection.Close();
+            }
+            catch (Exception arg_11F_0)
+            {
+                ProjectData.SetProjectError(arg_11F_0);
+                ProjectData.ClearProjectError();
+            }
+            BienSo = "";
+            ngayapDung = new DateTime(2000, 1, 1);
+            ngayHetHan = new DateTime(2000, 1, 1);
+            BienSo = "";
+            return false;
+        }
     }
 }

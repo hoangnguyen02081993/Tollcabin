@@ -269,19 +269,22 @@ namespace Tollcabin
                                 dataReceiveEvent(text);
                             }
                         }
-                        else if (text.Length == 12)
+                        else
                         {
-                            UcDocMaVach.TheCungEventHandler theCungEvent = this.TheCungEvent;
-                            if (theCungEvent != null)
+                            if (text.Length == 12)
                             {
-                                theCungEvent(text);
+                                UcDocMaVach.TheCungEventHandler theCungEvent = this.TheCungEvent;
+                                if (theCungEvent != null)
+                                {
+                                    theCungEvent(text);
+                                }
                             }
                         }
                     }
                     else
                     {
                         Thread.Sleep(20);
-                        if (this.ComPort.BytesToRead == 16)
+                        if (this.ComPort.BytesToRead >= 16)
                         {
                             this.Buffer = "";
                             int num = 0;

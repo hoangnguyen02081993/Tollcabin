@@ -330,6 +330,16 @@ namespace Tollcabin
                 }
             }
         }
+        public bool spLed_MoiXeQua_giamGia
+        {
+            set
+            {
+                if (value)
+                {
+                    this.spLedSendMessage("  MéI XE QUA!   VÏ GI¶M GIÀ");
+                }
+            }
+        }
 
         private void InitializeComponent()
         {

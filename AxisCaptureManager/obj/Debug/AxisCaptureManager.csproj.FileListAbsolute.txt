@@ -11,3 +11,16 @@ E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\AxisCaptureManager\
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\AxisCaptureManager\bin\Debug\CaptureTollCabinLib.dll
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\AxisCaptureManager\bin\Debug\CaptureTollCabinLib.pdb
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\AxisCaptureManager\obj\Debug\AxisCaptureManager.csproj.CopyComplete
+E:\D\git\source\Tollcabin\AxisCaptureManager\bin\Debug\AxisCaptureManager.exe.config
+E:\D\git\source\Tollcabin\AxisCaptureManager\bin\Debug\AxisCaptureManager.exe
+E:\D\git\source\Tollcabin\AxisCaptureManager\bin\Debug\AxisCaptureManager.pdb
+E:\D\git\source\Tollcabin\AxisCaptureManager\bin\Debug\CaptureTollCabinLib.dll
+E:\D\git\source\Tollcabin\AxisCaptureManager\bin\Debug\CaptureTollCabinLib.pdb
+E:\D\git\source\Tollcabin\AxisCaptureManager\obj\Debug\AxisCaptureManager.csprojResolveAssemblyReference.cache
+E:\D\git\source\Tollcabin\AxisCaptureManager\obj\Debug\AxisCaptureManager.AxisManager.resources
+E:\D\git\source\Tollcabin\AxisCaptureManager\obj\Debug\AxisCaptureManager.Properties.Resources.resources
+E:\D\git\source\Tollcabin\AxisCaptureManager\obj\Debug\AxisCaptureManager.csproj.GenerateResource.Cache
+E:\D\git\source\Tollcabin\AxisCaptureManager\obj\Debug\AxisCaptureManager.exe
+E:\D\git\source\Tollcabin\AxisCaptureManager\obj\Debug\AxisCaptureManager.pdb
+E:\D\git\source\Tollcabin\AxisCaptureManager\bin\Debug\Infrastructure.cs.dll
+E:\D\git\source\Tollcabin\AxisCaptureManager\bin\Debug\Infrastructure.cs.pdb

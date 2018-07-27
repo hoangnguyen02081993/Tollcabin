@@ -42,7 +42,6 @@ E:\D\git\source\Tollcabin\Tollcabin\obj\Debug\Tollcabin.pdb
 E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\Tollcabin.exe
 E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\Tollcabin.pdb
 E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\AForge.Video.FFMPEG.dll
-E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\Capture2014.dll
 E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\CaptureOcx.dll
 E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\Encryption.dll
 E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\Microsoft.DirectX.DirectSound.dll
@@ -74,3 +73,8 @@ E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\obj\Debug
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\obj\Debug\Tollcabin.csproj.CopyComplete
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\obj\Debug\Tollcabin.exe
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\obj\Debug\Tollcabin.pdb
+E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\CaptureTollCabinLib.dll
+E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\CaptureTollCabinLib.pdb
+E:\D\git\source\Tollcabin\Tollcabin\obj\Debug\Tollcabin.frmMain.resources
+E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\Infrastructure.cs.dll
+E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\Infrastructure.cs.pdb

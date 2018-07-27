@@ -55,11 +55,16 @@
     <Reference Include="AForge.Video.FFMPEG">
       <HintPath>lib\AForge.Video.FFMPEG.dll</HintPath>
     </Reference>
-    <Reference Include="Capture2014">
-      <HintPath>lib\Capture2014.dll</HintPath>
-    </Reference>
     <Reference Include="CaptureOcx">
       <HintPath>lib\CaptureOcx.dll</HintPath>
+    </Reference>
+    <Reference Include="DirectX.Capture, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\DirectX.Capture.dll</HintPath>
+    </Reference>
+    <Reference Include="DShowNET, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\DShowNET.dll</HintPath>
     </Reference>
     <Reference Include="Encryption">
       <HintPath>lib\Encryption.dll</HintPath>
@@ -80,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassTaoVideo.cs" />
+    <Compile Include="ConfigAxis.cs" />
     <Compile Include="CSDL.cs" />
     <Compile Include="DVR.cs" />
     <Compile Include="Form1.cs">
@@ -140,8 +146,12 @@
       <DependentUpon>UcSerialPort.cs</DependentUpon>
     </Compile>
     <Compile Include="VeXe.cs" />
+    <Compile Include="VideoCapture.cs" />
     <Compile Include="VoicePhone.cs" />
     <Compile Include="XeQuaTram.cs" />
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -214,6 +224,10 @@
     <ProjectReference Include="..\CaptureTollCabinLib\CaptureTollCabinLib.csproj">
       <Project>{57ba8699-802e-4177-83cf-4ebfe8f6aacb}</Project>
       <Name>CaptureTollCabinLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.cs\Infrastructure.cs.csproj">
+      <Project>{f9dc4e7f-7864-46cc-9074-4a44dd9edc69}</Project>
+      <Name>Infrastructure.cs</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

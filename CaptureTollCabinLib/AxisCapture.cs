@@ -7,18 +7,20 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Infrastructure;
+using Infrastructure.intefaces;
 
 namespace CaptureTollCabinLib
 {
-    public class AxisCapture
+    public class AxisCapture : IVideoCapture
     {
-        public delegate void CaptureHandler(Bitmap Imgs);
-        public event CaptureHandler CaptureComplete;
 
         private Control controlPanel;
         private string cameraIp { set; get; }
         
         private Mutex lockMute = new Mutex();
+
+        public event CaptureHandler CaptureComplete;
 
         private bool IsManager { set; get; }
 
@@ -36,14 +38,14 @@ namespace CaptureTollCabinLib
                 });
 
                 Bitmap imgs = new Bitmap(GetBmp);
-                this.CaptureComplete(imgs);
+                this.CaptureComplete?.Invoke(imgs);
             }
         }
         public void Capture()
         {
             DownloadImageFromUrl();
         }
-        public void InitDevice(Control layoutControl,string cameraIp)
+        public void InitDevice(Control layoutControl,string cameraIp = "")
         {
             this.controlPanel = layoutControl;
             this.cameraIp = cameraIp;

@@ -9,3 +9,5 @@ E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\CaptureTollCabinLib
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\CaptureTollCabinLib\obj\Debug\CaptureTollCabinLib.csproj.CoreCompileInputs.cache
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\CaptureTollCabinLib\obj\Debug\CaptureTollCabinLib.dll
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\CaptureTollCabinLib\obj\Debug\CaptureTollCabinLib.pdb
+E:\D\git\source\Tollcabin\CaptureTollCabinLib\bin\Debug\Infrastructure.cs.dll
+E:\D\git\source\Tollcabin\CaptureTollCabinLib\bin\Debug\Infrastructure.cs.pdb

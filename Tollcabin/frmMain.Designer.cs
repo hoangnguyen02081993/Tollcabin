@@ -30,7 +30,6 @@ namespace Tollcabin
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.TimerNgayGio = new System.Windows.Forms.Timer(this.components);
             this.TimerKiemTraDuLieuCu = new System.Windows.Forms.Timer(this.components);
             this.Timer_ChupHinh = new System.Windows.Forms.Timer(this.components);
@@ -58,52 +57,57 @@ namespace Tollcabin
             this.Controller = new Tollcabin.UcController();
             this.DocMaVach = new Tollcabin.UcDocMaVach();
             this.UcComPort = new Tollcabin.UcSerialPort();
-            this.pbPhone = new System.Windows.Forms.PictureBox();
-            this.pbBarrer = new System.Windows.Forms.PictureBox();
-            this.pbTrangThaiLan = new System.Windows.Forms.PictureBox();
-            this.pbTrangThaiMang = new System.Windows.Forms.PictureBox();
-            this.pbAnhXeVaoLan = new System.Windows.Forms.PictureBox();
-            this.pbClose = new System.Windows.Forms.PictureBox();
             this.pnStatusCarIn2 = new System.Windows.Forms.Panel();
             this.pnStatusCarIn1 = new System.Windows.Forms.Panel();
             this.pnVideo = new System.Windows.Forms.Panel();
             this.ssTime = new System.Windows.Forms.StatusStrip();
             this.tslbThongTin = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tssNhanVien = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssCatruc = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssCabin = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pbPhone = new System.Windows.Forms.PictureBox();
+            this.pbBarrer = new System.Windows.Forms.PictureBox();
+            this.pbTrangThaiLan = new System.Windows.Forms.PictureBox();
+            this.pbTrangThaiMang = new System.Windows.Forms.PictureBox();
+            this.tssNhanVien = new System.Windows.Forms.ToolStripStatusLabel();
             this.ToolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pbClose = new System.Windows.Forms.PictureBox();
+            this.pbAnhXeVaoLan = new System.Windows.Forms.PictureBox();
+            this.ssTime.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhone)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBarrer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTrangThaiLan)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTrangThaiMang)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbAnhXeVaoLan)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbClose)).BeginInit();
-            this.ssTime.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbAnhXeVaoLan)).BeginInit();
             this.SuspendLayout();
             // 
             // TimerNgayGio
             // 
             this.TimerNgayGio.Enabled = true;
             this.TimerNgayGio.Interval = 1000;
+            this.TimerNgayGio.Tick += new System.EventHandler(this.TimerNgayGio_Tick);
             // 
             // TimerKiemTraDuLieuCu
             // 
             this.TimerKiemTraDuLieuCu.Enabled = true;
             this.TimerKiemTraDuLieuCu.Interval = 120000;
+            this.TimerKiemTraDuLieuCu.Tick += new System.EventHandler(this.TimerKiemTraDuLieuCu_Tick);
             // 
             // Timer_ChupHinh
             // 
             this.Timer_ChupHinh.Enabled = true;
             this.Timer_ChupHinh.Interval = 200;
+            this.Timer_ChupHinh.Tick += new System.EventHandler(this.Timer_ChupHinh_Tick);
             // 
             // Timer_docMaVach
             // 
             this.Timer_docMaVach.Interval = 2000;
+            this.Timer_docMaVach.Tick += new System.EventHandler(this.Timer_docMaVach_Tick);
             // 
             // Timer_KhoiTaoLai
             // 
             this.Timer_KhoiTaoLai.Interval = 600000;
+            this.Timer_KhoiTaoLai.Tick += new System.EventHandler(this.Timer_KhoiTaoLai_Tick);
             // 
             // lbMaVeXe
             // 
@@ -113,7 +117,7 @@ namespace Tollcabin
             this.lbMaVeXe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.lbMaVeXe.Location = new System.Drawing.Point(251, 654);
             this.lbMaVeXe.Name = "lbMaVeXe";
-            this.lbMaVeXe.Size = new System.Drawing.Size(343, 40);
+            this.lbMaVeXe.Size = new System.Drawing.Size(226, 34);
             this.lbMaVeXe.TabIndex = 110;
             this.lbMaVeXe.Text = "K221107120000";
             this.lbMaVeXe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -126,7 +130,7 @@ namespace Tollcabin
             this.lbPhanLoaiDuoiLan.ForeColor = System.Drawing.Color.Red;
             this.lbPhanLoaiDuoiLan.Location = new System.Drawing.Point(251, 587);
             this.lbPhanLoaiDuoiLan.Name = "lbPhanLoaiDuoiLan";
-            this.lbPhanLoaiDuoiLan.Size = new System.Drawing.Size(245, 53);
+            this.lbPhanLoaiDuoiLan.Size = new System.Drawing.Size(52, 55);
             this.lbPhanLoaiDuoiLan.TabIndex = 109;
             this.lbPhanLoaiDuoiLan.Text = "3";
             this.lbPhanLoaiDuoiLan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -140,7 +144,7 @@ namespace Tollcabin
             this.lbBienSoDuoiLan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.lbBienSoDuoiLan.Location = new System.Drawing.Point(251, 543);
             this.lbBienSoDuoiLan.Name = "lbBienSoDuoiLan";
-            this.lbBienSoDuoiLan.Size = new System.Drawing.Size(229, 40);
+            this.lbBienSoDuoiLan.Size = new System.Drawing.Size(194, 39);
             this.lbBienSoDuoiLan.TabIndex = 108;
             this.lbBienSoDuoiLan.Text = "54P4-8920";
             this.lbBienSoDuoiLan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -372,73 +376,6 @@ namespace Tollcabin
             this.UcComPort.TabIndex = 4;
             this.UcComPort.Visible = false;
             // 
-            // pbPhone
-            // 
-            this.pbPhone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbPhone.BackColor = System.Drawing.Color.Black;
-            this.pbPhone.Location = new System.Drawing.Point(1106, 0);
-            this.pbPhone.Name = "pbPhone";
-            this.pbPhone.Size = new System.Drawing.Size(52, 48);
-            this.pbPhone.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbPhone.TabIndex = 146;
-            this.pbPhone.TabStop = false;
-            // 
-            // pbBarrer
-            // 
-            this.pbBarrer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbBarrer.BackgroundImage = global::Tollcabin.Properties.Resources.BarierRaDong;
-            this.pbBarrer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pbBarrer.Location = new System.Drawing.Point(1210, 0);
-            this.pbBarrer.Name = "pbBarrer";
-            this.pbBarrer.Size = new System.Drawing.Size(52, 48);
-            this.pbBarrer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbBarrer.TabIndex = 131;
-            this.pbBarrer.TabStop = false;
-            // 
-            // pbTrangThaiLan
-            // 
-            this.pbTrangThaiLan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbTrangThaiLan.BackgroundImage = global::Tollcabin.Properties.Resources.LanDong;
-            this.pbTrangThaiLan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pbTrangThaiLan.Location = new System.Drawing.Point(1158, 0);
-            this.pbTrangThaiLan.Name = "pbTrangThaiLan";
-            this.pbTrangThaiLan.Size = new System.Drawing.Size(52, 48);
-            this.pbTrangThaiLan.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbTrangThaiLan.TabIndex = 132;
-            this.pbTrangThaiLan.TabStop = false;
-            // 
-            // pbTrangThaiMang
-            // 
-            this.pbTrangThaiMang.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbTrangThaiMang.BackColor = System.Drawing.Color.White;
-            this.pbTrangThaiMang.BackgroundImage = global::Tollcabin.Properties.Resources.ketnoimang;
-            this.pbTrangThaiMang.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pbTrangThaiMang.Location = new System.Drawing.Point(1262, 0);
-            this.pbTrangThaiMang.Name = "pbTrangThaiMang";
-            this.pbTrangThaiMang.Size = new System.Drawing.Size(52, 48);
-            this.pbTrangThaiMang.TabIndex = 130;
-            this.pbTrangThaiMang.TabStop = false;
-            // 
-            // pbAnhXeVaoLan
-            // 
-            this.pbAnhXeVaoLan.BackColor = System.Drawing.Color.Gainsboro;
-            this.pbAnhXeVaoLan.Location = new System.Drawing.Point(93, 85);
-            this.pbAnhXeVaoLan.Name = "pbAnhXeVaoLan";
-            this.pbAnhXeVaoLan.Size = new System.Drawing.Size(576, 432);
-            this.pbAnhXeVaoLan.TabIndex = 133;
-            this.pbAnhXeVaoLan.TabStop = false;
-            // 
-            // pbClose
-            // 
-            this.pbClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbClose.BackgroundImage = global::Tollcabin.Properties.Resources.Close;
-            this.pbClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pbClose.Location = new System.Drawing.Point(1314, 0);
-            this.pbClose.Name = "pbClose";
-            this.pbClose.Size = new System.Drawing.Size(52, 48);
-            this.pbClose.TabIndex = 102;
-            this.pbClose.TabStop = false;
-            // 
             // pnStatusCarIn2
             // 
             this.pnStatusCarIn2.Location = new System.Drawing.Point(8, 571);
@@ -488,18 +425,6 @@ namespace Tollcabin
             this.tslbThongTin.Text = "Đưa thẻ nhân viên vào máy đọc thẻ";
             this.tslbThongTin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // tssNhanVien
-            // 
-            this.tssNhanVien.BackColor = System.Drawing.SystemColors.Control;
-            this.tssNhanVien.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)));
-            this.tssNhanVien.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tssNhanVien.ForeColor = System.Drawing.Color.Black;
-            this.tssNhanVien.Image = global::Tollcabin.Properties.Resources.Employee;
-            this.tssNhanVien.Name = "tssNhanVien";
-            this.tssNhanVien.Size = new System.Drawing.Size(631, 27);
-            this.tssNhanVien.Spring = true;
-            this.tssNhanVien.Text = "( chưa đăng nhập)";
-            // 
             // tssCatruc
             // 
             this.tssCatruc.AutoSize = false;
@@ -522,6 +447,65 @@ namespace Tollcabin
             this.tssCabin.Size = new System.Drawing.Size(80, 27);
             this.tssCabin.Text = "Làn: ";
             // 
+            // pbPhone
+            // 
+            this.pbPhone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbPhone.BackColor = System.Drawing.Color.Black;
+            this.pbPhone.Location = new System.Drawing.Point(1106, 0);
+            this.pbPhone.Name = "pbPhone";
+            this.pbPhone.Size = new System.Drawing.Size(52, 48);
+            this.pbPhone.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbPhone.TabIndex = 146;
+            this.pbPhone.TabStop = false;
+            // 
+            // pbBarrer
+            // 
+            this.pbBarrer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbBarrer.BackgroundImage = global::Tollcabin.Properties.Resources.BarierRaDong;
+            this.pbBarrer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pbBarrer.Location = new System.Drawing.Point(1210, 0);
+            this.pbBarrer.Name = "pbBarrer";
+            this.pbBarrer.Size = new System.Drawing.Size(52, 48);
+            this.pbBarrer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbBarrer.TabIndex = 131;
+            this.pbBarrer.TabStop = false;
+            // 
+            // pbTrangThaiLan
+            // 
+            this.pbTrangThaiLan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbTrangThaiLan.BackgroundImage = global::Tollcabin.Properties.Resources.LanDong;
+            this.pbTrangThaiLan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pbTrangThaiLan.Location = new System.Drawing.Point(1158, 0);
+            this.pbTrangThaiLan.Name = "pbTrangThaiLan";
+            this.pbTrangThaiLan.Size = new System.Drawing.Size(52, 48);
+            this.pbTrangThaiLan.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbTrangThaiLan.TabIndex = 132;
+            this.pbTrangThaiLan.TabStop = false;
+            // 
+            // pbTrangThaiMang
+            // 
+            this.pbTrangThaiMang.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbTrangThaiMang.BackColor = System.Drawing.Color.White;
+            this.pbTrangThaiMang.BackgroundImage = global::Tollcabin.Properties.Resources.ketnoimang;
+            this.pbTrangThaiMang.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pbTrangThaiMang.Location = new System.Drawing.Point(1262, 0);
+            this.pbTrangThaiMang.Name = "pbTrangThaiMang";
+            this.pbTrangThaiMang.Size = new System.Drawing.Size(52, 48);
+            this.pbTrangThaiMang.TabIndex = 130;
+            this.pbTrangThaiMang.TabStop = false;
+            // 
+            // tssNhanVien
+            // 
+            this.tssNhanVien.BackColor = System.Drawing.SystemColors.Control;
+            this.tssNhanVien.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)));
+            this.tssNhanVien.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tssNhanVien.ForeColor = System.Drawing.Color.Black;
+            this.tssNhanVien.Image = global::Tollcabin.Properties.Resources.Employee;
+            this.tssNhanVien.Name = "tssNhanVien";
+            this.tssNhanVien.Size = new System.Drawing.Size(177, 23);
+            this.tssNhanVien.Spring = true;
+            this.tssNhanVien.Text = "( chưa đăng nhập)";
+            // 
             // ToolStripStatusLabel1
             // 
             this.ToolStripStatusLabel1.AutoSize = false;
@@ -533,6 +517,26 @@ namespace Tollcabin
             this.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1";
             this.ToolStripStatusLabel1.Size = new System.Drawing.Size(90, 27);
             this.ToolStripStatusLabel1.Text = "161114VD";
+            // 
+            // pbClose
+            // 
+            this.pbClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbClose.BackgroundImage = global::Tollcabin.Properties.Resources.Close;
+            this.pbClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pbClose.Location = new System.Drawing.Point(1314, 0);
+            this.pbClose.Name = "pbClose";
+            this.pbClose.Size = new System.Drawing.Size(52, 48);
+            this.pbClose.TabIndex = 102;
+            this.pbClose.TabStop = false;
+            // 
+            // pbAnhXeVaoLan
+            // 
+            this.pbAnhXeVaoLan.BackColor = System.Drawing.Color.Gainsboro;
+            this.pbAnhXeVaoLan.Location = new System.Drawing.Point(93, 85);
+            this.pbAnhXeVaoLan.Name = "pbAnhXeVaoLan";
+            this.pbAnhXeVaoLan.Size = new System.Drawing.Size(576, 432);
+            this.pbAnhXeVaoLan.TabIndex = 133;
+            this.pbAnhXeVaoLan.TabStop = false;
             // 
             // frmMain
             // 
@@ -574,20 +578,19 @@ namespace Tollcabin
             this.Controls.Add(this.pbAnhXeVaoLan);
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TollCabin";
+            this.ssTime.ResumeLayout(false);
+            this.ssTime.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhone)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBarrer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTrangThaiLan)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTrangThaiMang)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbAnhXeVaoLan)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbClose)).EndInit();
-            this.ssTime.ResumeLayout(false);
-            this.ssTime.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbAnhXeVaoLan)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
