@@ -57,7 +57,6 @@ E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\bin\Debug
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\bin\Debug\Tollcabin.exe
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\bin\Debug\Tollcabin.pdb
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\bin\Debug\AForge.Video.FFMPEG.dll
-E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\bin\Debug\Capture2014.dll
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\bin\Debug\CaptureOcx.dll
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\bin\Debug\CaptureTollCabinLib.dll
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\bin\Debug\Encryption.dll
@@ -78,3 +77,6 @@ E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\CaptureTollCabinLib.pdb
 E:\D\git\source\Tollcabin\Tollcabin\obj\Debug\Tollcabin.frmMain.resources
 E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\Infrastructure.cs.dll
 E:\D\git\source\Tollcabin\Tollcabin\bin\Debug\Infrastructure.cs.pdb
+E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\bin\Debug\Infrastructure.cs.dll
+E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\bin\Debug\Infrastructure.cs.pdb
+E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Tollcabin\obj\Debug\Tollcabin.frmMain.resources

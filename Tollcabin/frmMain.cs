@@ -203,85 +203,95 @@ namespace Tollcabin
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            this._VideoXeQua = new ClassTaoVideo();
-            this._VideoXeQua.FlagLuuVideo = false;
-            this.TimeReplication = DateAndTime.Now;
-            this.TimeUuTienLuot = DateAndTime.Now;
+            TimeReplication = DateAndTime.Now;
+            TimeUuTienLuot = DateAndTime.Now;
             string userID = "";
             string passID = "";
             string initialCatalog = "";
             string str = "";
-            string arg_A6_0 = MyProject.Application.Info.DirectoryPath + "\\TollcabinConfig.xml";
-            int lanXeMain = (int)ModuleKhaiBaoConst.LanXeMain;
-            bool arg_B3_0 = ModuleKhac.ReadConfig(arg_A6_0, ref initialCatalog, ref userID, ref passID, ref lanXeMain, ref ModuleKhaiBaoConst.IPMayGiamSatMain, ref ModuleKhaiBaoConst.IPMayNhanDangMain, ref ModuleKhaiBaoConst.LocalImagesPathMain, ref ModuleKhaiBaoConst.ServerImagesPathMain, ref ModuleKhaiBaoConst.ServerImagesPathBSMain, ref ModuleKhaiBaoConst.PortDuLieuChinhMain, ref ModuleKhaiBaoConst.PortDuLieuCuMain, ref ModuleKhaiBaoConst.PortGiupDoMain, ref ModuleKhaiBaoConst.PortMayNhanDangMain, ref ModuleKhaiBaoConst.TramIdMain, ref ModuleKhaiBaoConst.StatusMain, ref str);
+            string filePath = MyProject.Application.Info.DirectoryPath + "\\TollcabinConfig.xml";
+            int lanXeMain = ModuleKhaiBaoConst.LanXeMain;
+            bool num = ModuleKhac.ReadConfig(filePath, ref initialCatalog, ref userID, ref passID, ref lanXeMain, ref ModuleKhaiBaoConst.IPMayGiamSatMain, ref ModuleKhaiBaoConst.IPMayNhanDangMain, ref ModuleKhaiBaoConst.LocalImagesPathMain, ref ModuleKhaiBaoConst.ServerImagesPathMain, ref ModuleKhaiBaoConst.ServerImagesPathBSMain, ref ModuleKhaiBaoConst.PortDuLieuChinhMain, ref ModuleKhaiBaoConst.PortDuLieuCuMain, ref ModuleKhaiBaoConst.PortGiupDoMain, ref ModuleKhaiBaoConst.PortMayNhanDangMain, ref ModuleKhaiBaoConst.TramIdMain, ref ModuleKhaiBaoConst.StatusMain, ref str);
             checked
             {
                 ModuleKhaiBaoConst.LanXeMain = (byte)lanXeMain;
-                if (!arg_B3_0)
+                if (!num)
                 {
                     Interaction.MsgBox("Không đọc được file TollcabinConfig.xml", MsgBoxStyle.OkOnly, null);
                     frmConfig frmConfig = new frmConfig();
                     frmConfig.ShowDialog();
                     Application.Exit();
-                    return;
                 }
-                this.SysTempLoad();
-                if (Operators.CompareString(Conversions.ToString(ModuleKhaiBaoConst.ServerImagesPathMain[ModuleKhaiBaoConst.ServerImagesPathMain.Length - 1]), "\\", false) != 0)
+                else
                 {
-                    ModuleKhaiBaoConst.ServerImagesPathMain += "\\";
-                }
-                if (Operators.CompareString(Conversions.ToString(ModuleKhaiBaoConst.LocalImagesPathMain[ModuleKhaiBaoConst.LocalImagesPathMain.Length - 1]), "\\", false) != 0)
-                {
-                    ModuleKhaiBaoConst.LocalImagesPathMain += "\\";
-                }
-                ModuleKhaiBaoConst.StrConnectMain = ModuleKhac.KetNoi(Dns.GetHostName() + str, initialCatalog, userID, passID);
-                if (Operators.CompareString(ModuleKhaiBaoConst.StrConnectMain, null, false) == 0)
-                {
-                    frmChoKetNoi frmChoKetNoi = new frmChoKetNoi();
-                    frmChoKetNoi.ShowDialog();
+                    SysTempLoad();
+                    if (Operators.CompareString(Conversions.ToString(ModuleKhaiBaoConst.ServerImagesPathMain[ModuleKhaiBaoConst.ServerImagesPathMain.Length - 1]), "\\", false) != 0)
+                    {
+                        ModuleKhaiBaoConst.ServerImagesPathMain += "\\";
+                    }
+                    if (Operators.CompareString(Conversions.ToString(ModuleKhaiBaoConst.LocalImagesPathMain[ModuleKhaiBaoConst.LocalImagesPathMain.Length - 1]), "\\", false) != 0)
+                    {
+                        ModuleKhaiBaoConst.LocalImagesPathMain += "\\";
+                    }
                     ModuleKhaiBaoConst.StrConnectMain = ModuleKhac.KetNoi(Dns.GetHostName() + str, initialCatalog, userID, passID);
                     if (Operators.CompareString(ModuleKhaiBaoConst.StrConnectMain, null, false) == 0)
                     {
-                        MessageBox.Show("Không kết nối được cơ sở dữ liệu", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                        frmChoKetNoi frmChoKetNoi = new frmChoKetNoi();
+                        frmChoKetNoi.ShowDialog();
+                        ModuleKhaiBaoConst.StrConnectMain = ModuleKhac.KetNoi(Dns.GetHostName() + str, initialCatalog, userID, passID);
+                        if (Operators.CompareString(ModuleKhaiBaoConst.StrConnectMain, null, false) == 0)
+                        {
+                            MessageBox.Show("Không kết nối được cơ sở dữ liệu", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            Application.Exit();
+                            return;
+                        }
+                    }
+                    tssCabin.Text = "Làn: " + Conversions.ToString(ModuleKhaiBaoConst.LanXeMain);
+                    Controller.MoLan = false;
+                    Controller.MoDenHongNgoai = false;
+                    Controller.PhanLoaiXe = 0;
+                    UcComPort.spLed_LanMo = false;
+                    ResetForm();
+                    try
+                    {
+                        this.configAxis = new ConfigAxis();
+                        this.configAxis.Load();
+                        if (this.CheckNetWork(configAxis.CameraIp))
+                        {
+                            this._ChupHinhXe = new AxisCapture();
+                            // Hoang example
+                            this._ChupHinhXe.InitDevice(this.pnVideo, this.configAxis.CameraIp);
+                        }
+                        else
+                        {
+                            this._ChupHinhXe = new VideoCapture();
+                            this._ChupHinhXe.InitDevice(this.pnVideo);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ProjectData.SetProjectError(ex);
+                        Exception ex2 = ex;
+                        Interaction.MsgBox("Không kết nối được thiết bị video", MsgBoxStyle.OkOnly, null);
                         Application.Exit();
+                        ProjectData.ClearProjectError();
                         return;
                     }
-                }
-                this.tssCabin.Text = "Làn: " + Conversions.ToString(ModuleKhaiBaoConst.LanXeMain);
-                this.Controller.MoLan = false;
-                this.Controller.MoDenHongNgoai = false;
-                this.Controller.PhanLoaiXe = 0;
-                this.UcComPort.spLed_LanMo = false;
-                this.ResetForm();
-                try
-                {
-                    this.configAxis = new ConfigAxis();
-                    this.configAxis.Load();
-                    if(this.CheckNetWork(configAxis.CameraIp))
+                    Timer_docMaVach.Enabled = true;
+                    tssNhanVien.ForeColor = Color.Black;
+                    try
                     {
-                        this._ChupHinhXe = new AxisCapture();
-                        // Hoang example
-                        this._ChupHinhXe.InitDevice(this.pnVideo, this.configAxis.CameraIp);
+                        ModuleKhaiBaoConst.StrConnectMain_mas = ModuleKhac.KetNoi(Dns.GetHostName() + str, "Master", userID, passID);
                     }
-                    else
+                    catch (Exception ex3)
                     {
-                        this._ChupHinhXe = new VideoCapture();
-                        this._ChupHinhXe.InitDevice(this.pnVideo);
+                        ProjectData.SetProjectError(ex3);
+                        Exception ex4 = ex3;
+                        ProjectData.ClearProjectError();
                     }
                 }
-                catch (Exception expr_240)
-                {
-                    ProjectData.SetProjectError(expr_240);
-                    Interaction.MsgBox("Không kết nối được thiết bị video", MsgBoxStyle.OkOnly, null);
-                    Application.Exit();
-                    ProjectData.ClearProjectError();
-                    return;
-                }
-                this.Timer_docMaVach.Enabled = true;
-                this.tssNhanVien.ForeColor = Color.Black;
             }
         }
-
         private void SysTempLoad()
         {
             try
@@ -939,80 +949,82 @@ namespace Tollcabin
 
         public void XuLyXe(string BienSo)
         {
-            if (!this.LenhNhanDangBienSo)
+            if (LenhNhanDangBienSo)
             {
-                return;
-            }
-            this.Controller.MoDenHongNgoai = false;
-            this.LenhNhanDangBienSo = false;
-            XeQuaTram xeQuaTram = new XeQuaTram();
-            string soVeNull = ModuleKhaiBaoConst.EnumStrNull.SoVeNull;
-            byte pLXeTruoc = 0;
-            string str = "";
-            BienSo = Strings.Trim(BienSo);
-            this.lbBienSoDuoiLanSet(BienSo);
-            if (Operators.CompareString(BienSo, "", false) != 0)
-            {
-                if (!(this.FlagUuTienDoan | this.FlagUuTienLuot))
+                Controller.MoDenHongNgoai = false;
+                LenhNhanDangBienSo = false;
+                XeQuaTram xeQuaTram = new XeQuaTram();
+                string soVeNull = ModuleKhaiBaoConst.EnumStrNull.SoVeNull;
+                byte pLXeTruoc = 0;
+                byte b = 0;
+                string str = "";
+                BienSo = Strings.Trim(BienSo);
+                lbBienSoDuoiLanSet(BienSo);
+                bool flag = false;
+                if (Operators.CompareString(BienSo, "", false) != 0)
                 {
-                    this.VideoData.TextOutDVR(this.DvrChanel, BienSo);
-                }
-                if (CSDL.TimVeThangTuBienSo(ModuleKhaiBaoConst.StrConnectMain, BienSo, ref soVeNull, ref str))
-                {
-                    string str2 = "";
-                    if (VeXe.LoaiVe(soVeNull) == 2)
+                    if (!(FlagUuTienDoan | FlagUuTienLuot))
                     {
-                        str2 = "XE DÙNG VÉ THÁNG";
+                        VideoData.TextOutDVR(DvrChanel, BienSo);
                     }
-                    else if (VeXe.LoaiVe(soVeNull) == 3)
+                    if (CSDL.TimVeThangTuBienSo(ModuleKhaiBaoConst.StrConnectMain, BienSo, ref soVeNull, ref str))
                     {
-                        str2 = "XE DÙNG VÉ QUÍ";
+                        string str2 = "";
+                        if (VeXe.LoaiVe(soVeNull) == 2)
+                        {
+                            str2 = "XE DÙNG VÉ THÁNG";
+                        }
+                        else if (VeXe.LoaiVe(soVeNull) == 3)
+                        {
+                            str2 = "XE DÙNG VÉ QUÍ";
+                        }
+                        lbThongTinVeSet(str2);
+                        lbGiaVeSet("NGÀY HẾT HẠN: " + str);
                     }
-                    this.lbThongTinVeSet(str2);
-                    this.lbGiaVeSet("NGÀY HẾT HẠN: " + str);
+                    string text = "";
+                    string text2 = "";
+                    switch (CSDL.UuTienKhach(ModuleKhaiBaoConst.StrConnectMain, BienSo, ref text2))
+                    {
+                        case CSDL.EUuTienKhach.HetHan:
+                            lbThongTinVeSet("VÉ NỘI BỘ HẾT HẠN");
+                            lbGiaVeSet(text2);
+                            break;
+                        case CSDL.EUuTienKhach.HopLe:
+                            xeQuaTram = HangDoiXeVaoTram.Insert(ModuleKhaiBaoConst.EnumVe.VeNoiBo13Char, 0L, BienSo, false);
+                            OpenBarrier(0, "VÉ NỘI BỘ: " + BienSo, "NGÀY HẾT HẠN: " + text2);
+                            UcComPort.spLed_MoiXeQua_VeQuy = true;
+                            VideoData.TextOutDVR(DvrChanel, xeQuaTram.BienSo, xeQuaTram.SoVe, xeQuaTram.PTTT, xeQuaTram.PLVe, xeQuaTram.MSNV, xeQuaTram.TTXeQua);
+                            break;
+                    }
+                    string str3 = "";
+                    if (CSDL.DanhSachDen(ModuleKhaiBaoConst.StrConnectMain, BienSo, ref str3))
+                    {
+                        lbThongTinVeSet(str3);
+                        Thread thread = new Thread(ChangeColor3);
+                        thread.Start();
+                    }
+                    string text3 = default(string);
+                    string text4 = default(string);
+                    string text5 = default(string);
+                    if (CSDL.ThongTinDangKiem(ModuleKhaiBaoConst.StrConnectMain, BienSo, ref text3, ref text4, ref text5))
+                    {
+                        lbBienSoXeCSDL.Text = BienSo;
+                        lbPhuongTien.Text = text3;
+                        lbSoNguoi.Text = text4;
+                        lbTTHangHoa.Text = text5;
+                        lbPhanLoaiiii.ForeColor = Color.White;
+                        lbBienSoooo.ForeColor = Color.White;
+                        lbSoNguoiiiii.ForeColor = Color.White;
+                        lbTaiTrongHangHoaaa.ForeColor = Color.White;
+                    }
+                    HangDoiXeVaoTram.Insert(BienSo, pLXeTruoc);
+                    pnStatusCar1SetColor(HangDoiXeVaoTram.CarFrontStatus);
+                    pnStatusCar2SetColor(HangDoiXeVaoTram.CarRearStatus);
                 }
-                string text = "";
-                switch (CSDL.UuTienKhach(ModuleKhaiBaoConst.StrConnectMain, BienSo, ref text))
+                else if (!(FlagUuTienDoan | FlagUuTienLuot))
                 {
-                    case CSDL.EUuTienKhach.HopLe:
-                        xeQuaTram = this.HangDoiXeVaoTram.Insert(ModuleKhaiBaoConst.EnumVe.VeNoiBo13Char, 0L, BienSo, false);
-                        this.OpenBarrier(0, "VÉ NỘI BỘ: " + BienSo, "NGÀY HẾT HẠN: " + text);
-                        this.UcComPort.spLed_MoiXeQua_VeQuy = true;
-                        this.VideoData.TextOutDVR(this.DvrChanel, xeQuaTram.BienSo, xeQuaTram.SoVe, xeQuaTram.PTTT, xeQuaTram.PLVe, xeQuaTram.MSNV, xeQuaTram.TTXeQua);
-                        break;
-                    case CSDL.EUuTienKhach.HetHan:
-                        this.lbThongTinVeSet("VÉ NỘI BỘ HẾT HẠN");
-                        this.lbGiaVeSet(text);
-                        break;
+                    VideoData.TextOutDVR(DvrChanel, "%%%%%%");
                 }
-                string str3 = "";
-                if (CSDL.DanhSachDen(ModuleKhaiBaoConst.StrConnectMain, BienSo, ref str3))
-                {
-                    this.lbThongTinVeSet(str3);
-                    Thread thread = new Thread(new ThreadStart(this.ChangeColor3));
-                    thread.Start();
-                }
-                string text2 = string.Empty ;
-                string text3 = string.Empty;
-                string text4 = string.Empty;
-                if (CSDL.ThongTinDangKiem(ModuleKhaiBaoConst.StrConnectMain, BienSo, ref text2, ref text3, ref text4))
-                {
-                    this.lbBienSoXeCSDL.Text = BienSo;
-                    this.lbPhuongTien.Text = text2;
-                    this.lbSoNguoi.Text = text3;
-                    this.lbTTHangHoa.Text = text4;
-                    this.lbPhanLoaiiii.ForeColor = Color.White;
-                    this.lbBienSoooo.ForeColor = Color.White;
-                    this.lbSoNguoiiiii.ForeColor = Color.White;
-                    this.lbTaiTrongHangHoaaa.ForeColor = Color.White;
-                }
-                this.HangDoiXeVaoTram.Insert(BienSo, (int)pLXeTruoc);
-                this.pnStatusCar1SetColor(this.HangDoiXeVaoTram.CarFrontStatus);
-                this.pnStatusCar2SetColor(this.HangDoiXeVaoTram.CarRearStatus);
-            }
-            else if (!(this.FlagUuTienDoan | this.FlagUuTienLuot))
-            {
-                this.VideoData.TextOutDVR(this.DvrChanel, "%%%%%%");
             }
         }
 

@@ -11,7 +11,6 @@ namespace Tollcabin
 {
     public class VeXe
     {
-        [DebuggerNonUserCode]
         public VeXe()
         {
         }
@@ -24,63 +23,53 @@ namespace Tollcabin
                 string left = text;
                 if (Operators.CompareString(left, ModuleKhaiBaoConst.EStrPTTT.CuongBuc, false) == 0)
                 {
-                    byte result = 9;
-                    return result;
+                    return 9;
                 }
                 if (Operators.CompareString(left, ModuleKhaiBaoConst.EStrPTTT.QLLuot, false) == 0)
                 {
-                    byte result = 5;
-                    return result;
+                    return 5;
                 }
                 if (Operators.CompareString(left, ModuleKhaiBaoConst.EStrPTTT.ToanQuoc, false) == 0)
                 {
-                    byte result = 7;
-                    return result;
+                    return 7;
                 }
                 if (Operators.CompareString(left, ModuleKhaiBaoConst.EStrPTTT.UuTienDoan, false) == 0)
                 {
-                    byte result = 8;
-                    return result;
+                    return 8;
                 }
                 if (Operators.CompareString(left, ModuleKhaiBaoConst.EStrPTTT.UuTienLuot, false) == 0)
                 {
-                    byte result = 6;
-                    return result;
+                    return 6;
                 }
                 if (Operators.CompareString(left, ModuleKhaiBaoConst.EStrPTTT.VeLuot, false) == 0)
                 {
-                    byte result = 1;
-                    return result;
+                    return 1;
                 }
                 if (Operators.CompareString(left, ModuleKhaiBaoConst.EStrPTTT.VeQui, false) == 0)
                 {
-                    byte result = 3;
-                    return result;
+                    return 3;
                 }
                 if (Operators.CompareString(left, ModuleKhaiBaoConst.EStrPTTT.VeThang, false) == 0)
                 {
-                    byte result = 2;
-                    return result;
+                    return 2;
                 }
                 if (Operators.CompareString(left, ModuleKhaiBaoConst.EStrPTTT.VeTruDan, false) == 0)
                 {
-                    byte result = 4;
-                    return result;
+                    return 4;
                 }
                 if (Operators.CompareString(left, ModuleKhaiBaoConst.EStrPTTT.UuTienKhach, false) == 0)
                 {
-                    byte result = 11;
-                    return result;
+                    return 11;
                 }
                 if (Operators.CompareString(left, ModuleKhaiBaoConst.EStrPTTT.ToanQuocCongAn, false) == 0)
                 {
-                    byte result = 12;
-                    return result;
+                    return 12;
                 }
             }
-            catch (Exception expr_F0)
+            catch (Exception ex)
             {
-                ProjectData.SetProjectError(expr_F0);
+                ProjectData.SetProjectError(ex);
+                Exception ex2 = ex;
                 ProjectData.ClearProjectError();
             }
             return 0;
@@ -90,18 +79,16 @@ namespace Tollcabin
         {
             try
             {
-                byte result;
-                if (VeXe.LoaiVe(SoVe13Char) == 5)
+                if (LoaiVe(SoVe13Char) == 5)
                 {
-                    result = 2;
-                    return result;
+                    return 2;
                 }
-                result = byte.Parse(SoVe13Char[1].ToString());
-                return result;
+                return byte.Parse(SoVe13Char[1].ToString());
             }
-            catch (Exception expr_24)
+            catch (Exception ex)
             {
-                ProjectData.SetProjectError(expr_24);
+                ProjectData.SetProjectError(ex);
+                Exception ex2 = ex;
                 ProjectData.ClearProjectError();
             }
             return 0;
@@ -114,9 +101,10 @@ namespace Tollcabin
             {
                 return byte.Parse(s);
             }
-            catch (Exception expr_32)
+            catch (Exception ex)
             {
-                ProjectData.SetProjectError(expr_32);
+                ProjectData.SetProjectError(ex);
+                Exception ex2 = ex;
                 ProjectData.ClearProjectError();
             }
             return 0;
@@ -127,11 +115,15 @@ namespace Tollcabin
             try
             {
                 string s = "01/01/20" + MaVali.Substring(0, 2);
-                return checked(DateTime.Parse(s).AddMonths(int.Parse(MaVali.Substring(2, 2)) - 1).AddDays((double)(int.Parse(MaVali.Substring(4, 2)) - 1)));
+                DateTime result = DateTime.Parse(s);
+                result = result.AddMonths(checked(int.Parse(MaVali.Substring(2, 2)) - 1));
+                result = result.AddDays((double)checked(int.Parse(MaVali.Substring(4, 2)) - 1));
+                return result;
             }
-            catch (Exception expr_4D)
+            catch (Exception ex)
             {
-                ProjectData.SetProjectError(expr_4D);
+                ProjectData.SetProjectError(ex);
+                Exception ex2 = ex;
                 ProjectData.ClearProjectError();
             }
             return DateAndTime.Now.AddDays(-2.0);
@@ -144,9 +136,10 @@ namespace Tollcabin
             {
                 return byte.Parse(s);
             }
-            catch (Exception expr_1C)
+            catch (Exception ex)
             {
-                ProjectData.SetProjectError(expr_1C);
+                ProjectData.SetProjectError(ex);
+                Exception ex2 = ex;
                 ProjectData.ClearProjectError();
             }
             return 0;
@@ -158,9 +151,10 @@ namespace Tollcabin
             {
                 return MaVali.Substring(0, 6);
             }
-            catch (Exception expr_0B)
+            catch (Exception ex)
             {
-                ProjectData.SetProjectError(expr_0B);
+                ProjectData.SetProjectError(ex);
+                Exception ex2 = ex;
                 ProjectData.ClearProjectError();
             }
             return "";
@@ -168,15 +162,13 @@ namespace Tollcabin
 
         public static bool ChangeVe16To13(string strVe16Char, ref string strVe13Char)
         {
+            string text = "";
             try
             {
-                bool result;
                 if (strVe16Char.Length != 16)
                 {
-                    result = false;
-                    return result;
+                    return false;
                 }
-                string text;
                 switch (int.Parse(strVe16Char.Substring(7, 1)))
                 {
                     case 0:
@@ -184,32 +176,31 @@ namespace Tollcabin
                         {
                             case 0:
                                 text = "T";
-                                goto IL_C9;
+                                break;
                             case 1:
                                 text = "F";
-                                goto IL_C9;
+                                break;
                             case 2:
                                 text = "H";
-                                goto IL_C9;
+                                break;
                             case 3:
                                 text = "I";
-                                goto IL_C9;
+                                break;
                             case 4:
                                 text = "E";
-                                goto IL_C9;
+                                break;
                             case 5:
                                 text = "G";
-                                goto IL_C9;
-                            case 8:
-                                text = "V";
-                                goto IL_C9;
+                                break;
                             case 9:
                                 text = "U";
-                                goto IL_C9;
+                                break;
+                            case 8:
+                                text = "V";
+                                break;
+                            default:
+                                return false;
                         }
-                        result = false;
-                        return result;
-                    IL_C9:
                         text += "0";
                         break;
                     case 1:
@@ -229,20 +220,18 @@ namespace Tollcabin
                         text += strVe16Char.Substring(8, 1);
                         break;
                     default:
-                        result = false;
-                        return result;
+                        return false;
                 }
                 text += strVe16Char.Substring(5, 2);
                 text += "0";
                 text += strVe16Char.Substring(4, 1);
-                text += strVe16Char.Substring(9, 7);
-                strVe13Char = text;
-                result = true;
-                return result;
+                text = (strVe13Char = text + strVe16Char.Substring(9, 7));
+                return true;
             }
-            catch (Exception expr_178)
+            catch (Exception ex)
             {
-                ProjectData.SetProjectError(expr_178);
+                ProjectData.SetProjectError(ex);
+                Exception ex2 = ex;
                 ProjectData.ClearProjectError();
             }
             return false;

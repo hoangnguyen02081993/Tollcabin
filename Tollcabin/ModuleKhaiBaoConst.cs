@@ -362,6 +362,7 @@ namespace Tollcabin
         public static int PortMayNhanDangMain;
 
         public static string StrConnectMain;
+        public static string StrConnectMain_mas;
 
         public static byte LanXeMain;
 

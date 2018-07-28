@@ -60,7 +60,7 @@ namespace Tollcabin
 
         public const string _OK = "OK";
 
-        private VoicePhone.StatusEventHandler StatusEvent;
+        private StatusEventHandler StatusEvent;
 
         private string NamesPhone;
 
@@ -86,27 +86,21 @@ namespace Tollcabin
 
         private byte[] byteData;
 
-        public event VoicePhone.StatusEventHandler Status
+        public bool TrangThaiKetNoi => flagSrarting;
+
+        public event StatusEventHandler Status
         {
-            [DebuggerNonUserCode]
             [MethodImpl(MethodImplOptions.Synchronized)]
+            [DebuggerNonUserCode]
             add
             {
-                this.StatusEvent = (VoicePhone.StatusEventHandler)Delegate.Combine(this.StatusEvent, value);
+                StatusEvent = (StatusEventHandler)Delegate.Combine(StatusEvent, value);
             }
-            [DebuggerNonUserCode]
             [MethodImpl(MethodImplOptions.Synchronized)]
+            [DebuggerNonUserCode]
             remove
             {
-                this.StatusEvent = (VoicePhone.StatusEventHandler)Delegate.Remove(this.StatusEvent, value);
-            }
-        }
-
-        public bool TrangThaiKetNoi
-        {
-            get
-            {
-                return this.flagSrarting;
+                StatusEvent = (StatusEventHandler)Delegate.Remove(StatusEvent, value);
             }
         }
 
@@ -116,37 +110,38 @@ namespace Tollcabin
             {
                 try
                 {
-                    this.NamesPhone = Names;
-                    this.device = new Device();
-                    this.device.SetCooperativeLevel(MainForm.Handle, Microsoft.DirectX.DirectSound.CooperativeLevel.Normal);
+                    NamesPhone = Names;
+                    device = new Device();
+                    device.SetCooperativeLevel(MainForm, CooperativeLevel.Normal);
                     CaptureDevicesCollection captureDevicesCollection = new CaptureDevicesCollection();
-                    this.cap = new Capture(captureDevicesCollection[0].DriverGuid);
+                    cap = new Capture(captureDevicesCollection[0].DriverGuid);
                     short num = 1;
                     short num2 = 16;
                     int num3 = 22050;
-                    this.waveFormat = new WaveFormat();
-                    this.waveFormat.Channels = num;
-                    this.waveFormat.FormatTag = WaveFormatTag.Pcm;
-                    this.waveFormat.SamplesPerSecond = num3;
-                    this.waveFormat.BitsPerSample = num2;
-                    this.waveFormat.BlockAlign = (short)Math.Round(unchecked((double)num * ((double)num2 / 8.0)));
-                    this.waveFormat.AverageBytesPerSecond = (int)this.waveFormat.BlockAlign * num3;
-                    this.captureBufferDescription = new CaptureBufferDescription();
-                    this.captureBufferDescription.BufferBytes = (int)Math.Round((double)this.waveFormat.AverageBytesPerSecond / 5.0);
-                    this.captureBufferDescription.Format = this.waveFormat;
-                    this.playbackBufferDescription = new BufferDescription();
-                    this.playbackBufferDescription.BufferBytes = (int)Math.Round((double)this.waveFormat.AverageBytesPerSecond / 5.0);
-                    this.playbackBufferDescription.Format = this.waveFormat;
-                    this.playbackBufferDescription.ControlEffects = true;
-                    this.playbackBufferDescription.GlobalFocus = true;
-                    this.playbackBuffer = new SecondaryBuffer(this.playbackBufferDescription, this.device);
-                    this.bufferSize = this.captureBufferDescription.BufferBytes;
-                    Thread thread = new Thread(new ThreadStart(this.Process));
+                    waveFormat = new WaveFormat();
+                    waveFormat.Channels = num;
+                    waveFormat.FormatTag = WaveFormatTag.Pcm;
+                    waveFormat.SamplesPerSecond = num3;
+                    waveFormat.BitsPerSample = num2;
+                    waveFormat.BlockAlign = (short)Math.Round(unchecked((double)num * ((double)num2 / 8.0)));
+                    waveFormat.AverageBytesPerSecond = waveFormat.BlockAlign * num3;
+                    captureBufferDescription = new CaptureBufferDescription();
+                    captureBufferDescription.BufferBytes = (int)Math.Round(unchecked((double)waveFormat.AverageBytesPerSecond / 5.0));
+                    captureBufferDescription.Format = waveFormat;
+                    playbackBufferDescription = new BufferDescription();
+                    playbackBufferDescription.BufferBytes = (int)Math.Round(unchecked((double)waveFormat.AverageBytesPerSecond / 5.0));
+                    playbackBufferDescription.Format = waveFormat;
+                    playbackBufferDescription.ControlEffects = true;
+                    playbackBufferDescription.GlobalFocus = true;
+                    playbackBuffer = new SecondaryBuffer(playbackBufferDescription, device);
+                    bufferSize = captureBufferDescription.BufferBytes;
+                    Thread thread = new Thread(Process);
                     thread.Start();
                 }
-                catch (Exception expr_1A4)
+                catch (Exception ex)
                 {
-                    ProjectData.SetProjectError(expr_1A4);
+                    ProjectData.SetProjectError(ex);
+                    Exception ex2 = ex;
                     bool result = false;
                     ProjectData.ClearProjectError();
                     return result;
@@ -159,34 +154,35 @@ namespace Tollcabin
         {
             try
             {
-                this.captureBuffer = new CaptureBuffer(this.captureBufferDescription, this.cap);
-                this.CreateNotifyPositions();
-                int num = checked((int)Math.Round((double)this.bufferSize / 2.0));
-                this.captureBuffer.Start(true);
+                captureBuffer = new CaptureBuffer(captureBufferDescription, cap);
+                CreateNotifyPositions();
+                int num = checked((int)Math.Round(unchecked((double)bufferSize / 2.0)));
+                captureBuffer.Start(true);
                 bool flag = true;
-                int num2 = 0;
+                int bufferStartingLocation = 0;
                 MemoryStream memoryStream = new MemoryStream(num);
-                while (this.flagSrarting)
+                while (flagSrarting)
                 {
-                    this.autoResetEvent.WaitOne();
+                    autoResetEvent.WaitOne();
                     memoryStream.Seek(0L, SeekOrigin.Begin);
-                    this.captureBuffer.Read(num2, memoryStream, num, 0);
+                    captureBuffer.Read(bufferStartingLocation, memoryStream, num, LockFlag.None);
                     flag = !flag;
-                    num2 = (flag ? 0 : num);
+                    bufferStartingLocation = ((!flag) ? num : 0);
                     byte[] buffer = memoryStream.GetBuffer();
-                    this.udpSend.Send(buffer, buffer.Length, this.send_Com);
+                    udpSend.Send(buffer, buffer.Length, send_Com);
                 }
             }
-            catch (Exception expr_AA)
+            catch (Exception ex)
             {
-                ProjectData.SetProjectError(expr_AA);
+                ProjectData.SetProjectError(ex);
+                Exception ex2 = ex;
                 ProjectData.ClearProjectError();
             }
             finally
             {
-                this.captureBuffer.Stop();
-                this.captureBuffer.Dispose();
-                this.udpSend.Close();
+                captureBuffer.Stop();
+                captureBuffer.Dispose();
+                udpSend.Close();
             }
         }
 
@@ -194,23 +190,24 @@ namespace Tollcabin
         {
             try
             {
-                this.playbackBuffer = new SecondaryBuffer(this.playbackBufferDescription, this.device);
-                while (this.flagSrarting)
+                playbackBuffer = new SecondaryBuffer(playbackBufferDescription, device);
+                while (flagSrarting)
                 {
-                    byte[] array = this.udpRecive.Receive(ref this.recive_Com);
+                    byte[] array = udpRecive.Receive(ref recive_Com);
                     byte[] array2 = new byte[checked(array.Length + 1)];
                     array2 = array;
-                    this.playbackBuffer.Dispose();
-                    this.playbackBuffer = new SecondaryBuffer(this.playbackBufferDescription, this.device);
-                    this.playbackBuffer.Write(0, array2, 0);
-                    this.playbackBuffer.Play(0, 0);
+                    playbackBuffer.Dispose();
+                    playbackBuffer = new SecondaryBuffer(playbackBufferDescription, device);
+                    playbackBuffer.Write(0, array2, LockFlag.None);
+                    playbackBuffer.Play(0, BufferPlayFlags.Default);
                 }
-                this.playbackBuffer.Dispose();
-                this.udpRecive.Close();
+                playbackBuffer.Dispose();
+                udpRecive.Close();
             }
-            catch (Exception expr_95)
+            catch (Exception ex)
             {
-                ProjectData.SetProjectError(expr_95);
+                ProjectData.SetProjectError(ex);
+                Exception ex2 = ex;
                 ProjectData.ClearProjectError();
             }
             finally
@@ -224,23 +221,24 @@ namespace Tollcabin
             {
                 try
                 {
-                    this.autoResetEvent = new AutoResetEvent(false);
-                    this.notify = new Notify(this.captureBuffer);
+                    autoResetEvent = new AutoResetEvent(false);
+                    notify = new Notify(captureBuffer);
                     BufferPositionNotify bufferPositionNotify = new BufferPositionNotify();
-                    bufferPositionNotify.Offset = (int)Math.Round(unchecked((double)this.bufferSize / 2.0 - 1.0));
-                    bufferPositionNotify.EventNotifyHandle = this.autoResetEvent.SafeWaitHandle.DangerousGetHandle();
+                    bufferPositionNotify.Offset = (int)Math.Round(unchecked((double)bufferSize / 2.0 - 1.0));
+                    bufferPositionNotify.EventNotifyHandle = autoResetEvent.SafeWaitHandle.DangerousGetHandle();
                     BufferPositionNotify bufferPositionNotify2 = new BufferPositionNotify();
-                    bufferPositionNotify2.Offset = this.bufferSize - 1;
-                    bufferPositionNotify2.EventNotifyHandle = this.autoResetEvent.SafeWaitHandle.DangerousGetHandle();
-                    this.notify.SetNotificationPositions(new BufferPositionNotify[]
+                    bufferPositionNotify2.Offset = bufferSize - 1;
+                    bufferPositionNotify2.EventNotifyHandle = autoResetEvent.SafeWaitHandle.DangerousGetHandle();
+                    notify.SetNotificationPositions(new BufferPositionNotify[2]
                     {
-                        bufferPositionNotify,
-                        bufferPositionNotify2
+                    bufferPositionNotify,
+                    bufferPositionNotify2
                     });
                 }
-                catch (Exception expr_BF)
+                catch (Exception ex)
                 {
-                    ProjectData.SetProjectError(expr_BF);
+                    ProjectData.SetProjectError(ex);
+                    Exception ex2 = ex;
                     ProjectData.ClearProjectError();
                 }
             }
@@ -250,355 +248,339 @@ namespace Tollcabin
         {
             checked
             {
-                while (this.flagSrarting)
+                while (true)
                 {
-                    if (this.countKiemTra >= 3)
+                    if (flagSrarting)
                     {
-                        this.flagSrarting = false;
-                        this.countKiemTra = 0;
-                        try
+                        if (countKiemTra < 3)
                         {
-                            this.udpRecive.Close();
+                            Thread.Sleep(1000);
+                            countKiemTra++;
+                            Sendata("ONCALL");
+                            continue;
                         }
-                        catch (Exception expr_31)
-                        {
-                            ProjectData.SetProjectError(expr_31);
-                            ProjectData.ClearProjectError();
-                        }
-                        try
-                        {
-                            this.udpSend.Close();
-                        }
-                        catch (Exception expr_4C)
-                        {
-                            ProjectData.SetProjectError(expr_4C);
-                            ProjectData.ClearProjectError();
-                        }
-                        this.flagSrarting = false;
-                        this.countKiemTra = 0;
-                        VoicePhone.StatusEventHandler statusEvent = this.StatusEvent;
-                        if (statusEvent != null)
-                        {
-                            statusEvent(1, this.TenMayDangGoi);
-                        }
-                        return;
+                        break;
                     }
-                    Thread.Sleep(1000);
-                    this.countKiemTra++;
-                    this.Sendata("ONCALL");
+                    return;
                 }
+                flagSrarting = false;
+                countKiemTra = 0;
+                try
+                {
+                    udpRecive.Close();
+                }
+                catch (Exception ex)
+                {
+                    ProjectData.SetProjectError(ex);
+                    Exception ex2 = ex;
+                    ProjectData.ClearProjectError();
+                }
+                try
+                {
+                    udpSend.Close();
+                }
+                catch (Exception ex3)
+                {
+                    ProjectData.SetProjectError(ex3);
+                    Exception ex4 = ex3;
+                    ProjectData.ClearProjectError();
+                }
+                flagSrarting = false;
+                countKiemTra = 0;
+                StatusEventHandler statusEvent = StatusEvent;
+                statusEvent?.Invoke(1, TenMayDangGoi);
             }
         }
 
         public void Process()
         {
-            checked
-            {
-                try
-                {
-                    while (true)
-                    {
-                        this.SocketConnect = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        this.SocketConnect.Blocking = true;
-                        IPHostEntry hostEntry = Dns.GetHostEntry(MyProject.Computer.Name);
-                        IPAddress[] addressList = hostEntry.AddressList;
-                        IPAddress[] array = addressList;
-                        IPAddress address = null;
-                        for (int i = 0; i < array.Length; i++)
-                        {
-                            IPAddress iPAddress = array[i];
-                            if (iPAddress.AddressFamily == AddressFamily.InterNetwork)
-                            {
-                                address = iPAddress;
-                                break;
-                            }
-                        }
-                        IPEndPoint localEP = new IPEndPoint(address, 15123);
-                        this.SocketConnect.Bind(localEP);
-                        this.SocketConnect.Listen(10);
-                        while (true)
-                        {
-                            try
-                            {
-                                Socket socket = this.SocketConnect.Accept();
-                                if (socket.Connected)
-                                {
-                                    Thread thread = new Thread(delegate (object a0)
-                                    {
-                                        this.XuLyData((Socket)a0);
-                                    });
-                                    thread.Start(socket);
-                                }
-                            }
-                            catch (Exception expr_B8)
-                            {
-                                ProjectData.SetProjectError(expr_B8);
-                                if (!this.flagClose)
-                                {
-                                    ProjectData.ClearProjectError();
-                                    break;
-                                }
-                                ProjectData.ClearProjectError();
-                                return;
-                            }
-                        }
-                    }
-                }
-                catch (Exception expr_DB)
-                {
-                    ProjectData.SetProjectError(expr_DB);
-                    ProjectData.ClearProjectError();
-                }
-            }
-        }
-
-        public void XuLyData(Socket sock)
-        {
-            checked
-            {
-                try
-                {
-                    byte[] array = new byte[1025];
-                    sock.ReceiveTimeout = 3000;
-                    int length = sock.Receive(array, array.Length, SocketFlags.None);
-                    string @string = Encoding.ASCII.GetString(array, 0, array.Length);
-                    string text = @string.Substring(0, length);
-                    string left = text;
-                    if (Operators.CompareString(left, "ENDCALL", false) == 0)
-                    {
-                        this.flagSrarting = false;
-                        this.countKiemTra = 0;
-                        try
-                        {
-                            this.udpRecive.Close();
-                        }
-                        catch (Exception expr_6F)
-                        {
-                            ProjectData.SetProjectError(expr_6F);
-                            ProjectData.ClearProjectError();
-                        }
-                        try
-                        {
-                            this.udpSend.Close();
-                        }
-                        catch (Exception expr_8B)
-                        {
-                            ProjectData.SetProjectError(expr_8B);
-                            ProjectData.ClearProjectError();
-                        }
-                        this.flagSrarting = false;
-                        this.countKiemTra = 0;
-                        VoicePhone.StatusEventHandler statusEvent = this.StatusEvent;
-                        if (statusEvent != null)
-                        {
-                            statusEvent(1, this.TenMayDangGoi);
-                        }
-                    }
-                    else if (Operators.CompareString(left, "BUSY", false) == 0)
-                    {
-                        VoicePhone.StatusEventHandler statusEvent = this.StatusEvent;
-                        if (statusEvent != null)
-                        {
-                            statusEvent(0, this.TenMayDangGoi);
-                        }
-                    }
-                    else if (Operators.CompareString(left, "ONCALL", false) == 0)
-                    {
-                        this.countKiemTra = 0;
-                    }
-                    else if (Operators.CompareString(left, "OK", false) == 0)
-                    {
-                        this.flagSrarting = true;
-                        IPHostEntry hostEntry = Dns.GetHostEntry(this.TenMayDangGoi);
-                        IPAddress[] addressList = hostEntry.AddressList;
-                        IPAddress[] array2 = addressList;
-                        IPAddress address = null;
-                        for (int i = 0; i < array2.Length; i++)
-                        {
-                            IPAddress iPAddress = array2[i];
-                            if (iPAddress.AddressFamily == AddressFamily.InterNetwork)
-                            {
-                                address = iPAddress;
-                                break;
-                            }
-                        }
-                        this.udpSend = new UdpClient();
-                        this.udpRecive = new UdpClient(15346);
-                        this.send_Com = new IPEndPoint(address, 15345);
-                        this.recive_Com = new IPEndPoint(address, 15346);
-                        Thread thread = new Thread(new ThreadStart(this.Send));
-                        thread.Start();
-                        Thread thread2 = new Thread(new ThreadStart(this.Receive));
-                        thread2.Start();
-                        Thread thread3 = new Thread(new ThreadStart(this.KiemTra));
-                        thread3.Start();
-                        VoicePhone.StatusEventHandler statusEvent = this.StatusEvent;
-                        if (statusEvent != null)
-                        {
-                            statusEvent(2, this.TenMayDangGoi);
-                        }
-                    }
-                    else if (this.flagSrarting)
-                    {
-                        this.Sendata("BUSY");
-                    }
-                    else
-                    {
-                        this.TenMayDangGoi = text;
-                        this.flagSrarting = true;
-                        this.Sendata("OK");
-                        this.udpSend = new UdpClient();
-                        this.udpRecive = new UdpClient(15345);
-                        IPHostEntry hostEntry2 = Dns.GetHostEntry(this.TenMayDangGoi);
-                        IPAddress[] addressList2 = hostEntry2.AddressList;
-                        IPAddress[] array3 = addressList2;
-                        IPAddress address2 = null;
-                        for (int j = 0; j < array3.Length; j++)
-                        {
-                            IPAddress iPAddress2 = array3[j];
-                            if (iPAddress2.AddressFamily == AddressFamily.InterNetwork)
-                            {
-                                address2 = iPAddress2;
-                                break;
-                            }
-                        }
-                        this.send_Com = new IPEndPoint(address2, 15346);
-                        this.recive_Com = new IPEndPoint(address2, 15345);
-                        Thread thread4 = new Thread(new ThreadStart(this.Send));
-                        thread4.Start();
-                        Thread thread5 = new Thread(new ThreadStart(this.Receive));
-                        thread5.Start();
-                        Thread thread6 = new Thread(new ThreadStart(this.KiemTra));
-                        thread6.Start();
-                        VoicePhone.StatusEventHandler statusEvent = this.StatusEvent;
-                        if (statusEvent != null)
-                        {
-                            statusEvent(2, this.TenMayDangGoi);
-                        }
-                    }
-                }
-                catch (Exception expr_349)
-                {
-                    ProjectData.SetProjectError(expr_349);
-                    ProjectData.ClearProjectError();
-                }
-                sock.Close();
-            }
-        }
-
-        public void CallVoid(string ComputerName)
-        {
-            this.TenMayDangGoi = ComputerName;
-            this.Sendata(MyProject.Computer.Name);
-        }
-
-        public void EndCall()
-        {
-            this.flagSrarting = false;
-            this.countKiemTra = 0;
             try
             {
-                this.udpRecive.Close();
-            }
-            catch (Exception expr_1B)
-            {
-                ProjectData.SetProjectError(expr_1B);
-                ProjectData.ClearProjectError();
-            }
-            try
-            {
-                this.udpSend.Close();
-            }
-            catch (Exception expr_36)
-            {
-                ProjectData.SetProjectError(expr_36);
-                ProjectData.ClearProjectError();
-            }
-            this.flagSrarting = false;
-            this.countKiemTra = 0;
-            try
-            {
-                this.Sendata("ENDCALL");
-            }
-            catch (Exception expr_5F)
-            {
-                ProjectData.SetProjectError(expr_5F);
-                ProjectData.ClearProjectError();
-            }
-            VoicePhone.StatusEventHandler statusEvent = this.StatusEvent;
-            if (statusEvent != null)
-            {
-                statusEvent(1, this.TenMayDangGoi);
-            }
-        }
-
-        public void Sendata(string data)
-        {
-            Thread thread = new Thread(delegate (object a0)
-            {
-                this.SENDDDD(Conversions.ToString(a0));
-            });
-            thread.Start(data);
-        }
-
-        private void SENDDDD(string data)
-        {
-            checked
-            {
-                try
+                while (true)
                 {
-                    Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    IPHostEntry hostEntry = Dns.GetHostEntry(this.TenMayDangGoi);
+                    IL_0000:
+                    SocketConnect = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    SocketConnect.Blocking = true;
+                    IPHostEntry hostEntry = Dns.GetHostEntry(MyProject.Computer.Name);
                     IPAddress[] addressList = hostEntry.AddressList;
                     IPAddress[] array = addressList;
-                    IPAddress address = null;
-                    for (int i = 0; i < array.Length; i++)
+                    IPAddress address = default(IPAddress);
+                    foreach (IPAddress iPAddress in array)
                     {
-                        IPAddress iPAddress = array[i];
                         if (iPAddress.AddressFamily == AddressFamily.InterNetwork)
                         {
                             address = iPAddress;
                             break;
                         }
                     }
-                    IPEndPoint remoteEP = new IPEndPoint(address, 15123);
-                    socket.SendTimeout = 1000;
-                    socket.Connect(remoteEP);
-                    byte[] bytes = Encoding.ASCII.GetBytes(data);
-                    socket.Send(bytes, bytes.Length, SocketFlags.None);
-                }
-                catch (Exception expr_84)
-                {
-                    ProjectData.SetProjectError(expr_84);
-                    VoicePhone.StatusEventHandler statusEvent = this.StatusEvent;
-                    if (statusEvent != null)
+                    IPEndPoint localEP = new IPEndPoint(address, 15123);
+                    SocketConnect.Bind(localEP);
+                    SocketConnect.Listen(10);
+                    while (true)
                     {
-                        statusEvent(3, "Kết nối bị lỗi.");
+                        try
+                        {
+                            Socket socket = SocketConnect.Accept();
+                            if (socket.Connected)
+                            {
+                                Thread thread = new Thread(delegate (object a0)
+                                {
+                                    XuLyData((Socket)a0);
+                                });
+                                thread.Start(socket);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ProjectData.SetProjectError(ex);
+                            Exception ex2 = ex;
+                            if (!flagClose)
+                            {
+                                ProjectData.ClearProjectError();
+                                goto IL_0000;
+                            }
+                            ProjectData.ClearProjectError();
+                            return;
+                        }
                     }
-                    ProjectData.ClearProjectError();
                 }
+            }
+            catch (Exception ex3)
+            {
+                ProjectData.SetProjectError(ex3);
+                Exception ex4 = ex3;
+                ProjectData.ClearProjectError();
+            }
+        }
+
+        public void XuLyData(Socket sock)
+        {
+            string text = "";
+            try
+            {
+                byte[] array = new byte[1025];
+                sock.ReceiveTimeout = 3000;
+                int length = sock.Receive(array, array.Length, SocketFlags.None);
+                text = Encoding.ASCII.GetString(array, 0, array.Length);
+                string text2 = text.Substring(0, length);
+                string left = text2;
+                if (Operators.CompareString(left, "ENDCALL", false) == 0)
+                {
+                    flagSrarting = false;
+                    countKiemTra = 0;
+                    try
+                    {
+                        udpRecive.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        ProjectData.SetProjectError(ex);
+                        Exception ex2 = ex;
+                        ProjectData.ClearProjectError();
+                    }
+                    try
+                    {
+                        udpSend.Close();
+                    }
+                    catch (Exception ex3)
+                    {
+                        ProjectData.SetProjectError(ex3);
+                        Exception ex4 = ex3;
+                        ProjectData.ClearProjectError();
+                    }
+                    flagSrarting = false;
+                    countKiemTra = 0;
+                    StatusEventHandler statusEvent = StatusEvent;
+                    statusEvent?.Invoke(1, TenMayDangGoi);
+                }
+                else if (Operators.CompareString(left, "BUSY", false) == 0)
+                {
+                    StatusEventHandler statusEvent = StatusEvent;
+                    statusEvent?.Invoke(0, TenMayDangGoi);
+                }
+                else if (Operators.CompareString(left, "ONCALL", false) == 0)
+                {
+                    countKiemTra = 0;
+                }
+                else if (Operators.CompareString(left, "OK", false) == 0)
+                {
+                    flagSrarting = true;
+                    IPHostEntry hostEntry = Dns.GetHostEntry(TenMayDangGoi);
+                    IPAddress[] addressList = hostEntry.AddressList;
+                    IPAddress[] array2 = addressList;
+                    IPAddress address = default(IPAddress);
+                    foreach (IPAddress iPAddress in array2)
+                    {
+                        if (iPAddress.AddressFamily == AddressFamily.InterNetwork)
+                        {
+                            address = iPAddress;
+                            break;
+                        }
+                    }
+                    udpSend = new UdpClient();
+                    udpRecive = new UdpClient(15346);
+                    send_Com = new IPEndPoint(address, 15345);
+                    recive_Com = new IPEndPoint(address, 15346);
+                    Thread thread = new Thread(Send);
+                    thread.Start();
+                    Thread thread2 = new Thread(Receive);
+                    thread2.Start();
+                    Thread thread3 = new Thread(KiemTra);
+                    thread3.Start();
+                    StatusEventHandler statusEvent = StatusEvent;
+                    statusEvent?.Invoke(2, TenMayDangGoi);
+                }
+                else if (flagSrarting)
+                {
+                    Sendata("BUSY");
+                }
+                else
+                {
+                    TenMayDangGoi = text2;
+                    flagSrarting = true;
+                    Sendata("OK");
+                    udpSend = new UdpClient();
+                    udpRecive = new UdpClient(15345);
+                    IPHostEntry hostEntry2 = Dns.GetHostEntry(TenMayDangGoi);
+                    IPAddress[] addressList2 = hostEntry2.AddressList;
+                    IPAddress[] array3 = addressList2;
+                    IPAddress address2 = default(IPAddress);
+                    foreach (IPAddress iPAddress2 in array3)
+                    {
+                        if (iPAddress2.AddressFamily == AddressFamily.InterNetwork)
+                        {
+                            address2 = iPAddress2;
+                            break;
+                        }
+                    }
+                    send_Com = new IPEndPoint(address2, 15346);
+                    recive_Com = new IPEndPoint(address2, 15345);
+                    Thread thread4 = new Thread(Send);
+                    thread4.Start();
+                    Thread thread5 = new Thread(Receive);
+                    thread5.Start();
+                    Thread thread6 = new Thread(KiemTra);
+                    thread6.Start();
+                    StatusEventHandler statusEvent = StatusEvent;
+                    statusEvent?.Invoke(2, TenMayDangGoi);
+                }
+            }
+            catch (Exception ex5)
+            {
+                ProjectData.SetProjectError(ex5);
+                Exception ex6 = ex5;
+                ProjectData.ClearProjectError();
+            }
+            sock.Close();
+        }
+
+        public void CallVoid(string ComputerName)
+        {
+            TenMayDangGoi = ComputerName;
+            Sendata(MyProject.Computer.Name);
+        }
+
+        public void EndCall()
+        {
+            flagSrarting = false;
+            countKiemTra = 0;
+            try
+            {
+                udpRecive.Close();
+            }
+            catch (Exception ex)
+            {
+                ProjectData.SetProjectError(ex);
+                Exception ex2 = ex;
+                ProjectData.ClearProjectError();
+            }
+            try
+            {
+                udpSend.Close();
+            }
+            catch (Exception ex3)
+            {
+                ProjectData.SetProjectError(ex3);
+                Exception ex4 = ex3;
+                ProjectData.ClearProjectError();
+            }
+            flagSrarting = false;
+            countKiemTra = 0;
+            try
+            {
+                Sendata("ENDCALL");
+            }
+            catch (Exception ex5)
+            {
+                ProjectData.SetProjectError(ex5);
+                Exception ex6 = ex5;
+                ProjectData.ClearProjectError();
+            }
+            StatusEventHandler statusEvent = StatusEvent;
+            statusEvent?.Invoke(1, TenMayDangGoi);
+        }
+
+        public void Sendata(string data)
+        {
+            Thread thread = new Thread(delegate (object a0)
+            {
+                SENDDDD(Conversions.ToString(a0));
+            });
+            thread.Start(data);
+        }
+
+        private void SENDDDD(string data)
+        {
+            try
+            {
+                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IPHostEntry hostEntry = Dns.GetHostEntry(TenMayDangGoi);
+                IPAddress[] addressList = hostEntry.AddressList;
+                IPAddress[] array = addressList;
+                IPAddress address = default(IPAddress);
+                foreach (IPAddress iPAddress in array)
+                {
+                    if (iPAddress.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        address = iPAddress;
+                        break;
+                    }
+                }
+                IPEndPoint remoteEP = new IPEndPoint(address, 15123);
+                socket.SendTimeout = 1000;
+                socket.Connect(remoteEP);
+                byte[] bytes = Encoding.ASCII.GetBytes(data);
+                socket.Send(bytes, bytes.Length, SocketFlags.None);
+            }
+            catch (Exception ex)
+            {
+                ProjectData.SetProjectError(ex);
+                Exception ex2 = ex;
+                StatusEventHandler statusEvent = StatusEvent;
+                statusEvent?.Invoke(3, "Kết nối bị lỗi.");
+                ProjectData.ClearProjectError();
             }
         }
 
         public void close()
         {
-            if (this.flagSrarting)
+            if (flagSrarting)
             {
-                this.EndCall();
+                EndCall();
             }
-            this.flagSrarting = false;
-            this.flagClose = true;
-            this.SocketConnect.Close();
+            flagSrarting = false;
+            flagClose = true;
+            SocketConnect.Close();
         }
 
         public VoicePhone()
         {
-            this.flagClose = false;
-            this.flagSrarting = false;
-            this.countKiemTra = 0;
-            this.TenMayDangGoi = "";
-            this.NamesPhone = "";
-            this.byteData = new byte[1024];
+            flagClose = false;
+            flagSrarting = false;
+            countKiemTra = 0;
+            TenMayDangGoi = "";
+            NamesPhone = "";
+            byteData = new byte[1024];
         }
     }
 }

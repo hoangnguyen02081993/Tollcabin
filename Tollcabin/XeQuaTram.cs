@@ -44,11 +44,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.DataSend_;
+                return DataSend_;
             }
             set
             {
-                this.DataSend_ = value;
+                DataSend_ = value;
             }
         }
 
@@ -56,11 +56,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.BienSo_;
+                return BienSo_;
             }
             set
             {
-                this.BienSo_ = value;
+                BienSo_ = value;
             }
         }
 
@@ -68,63 +68,66 @@ namespace Tollcabin
         {
             get
             {
-                switch (this.PTTT)
+                switch (PTTT)
                 {
-                    case 0:
-                        return 8;
-                    case 1:
-                    case 5:
-                        if (this.PLXeTruoc == 0)
-                        {
-                            if (Operators.CompareString(this.BienSo, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false) == 0)
-                            {
-                                return 2;
-                            }
-                            return 1;
-                        }
-                        else
-                        {
-                            if (this.PLVe != this.PLXeTruoc)
-                            {
-                                return 3;
-                            }
-                            if (this.PLVe < this.PLXeSau)
-                            {
-                                return 4;
-                            }
-                            return 0;
-                        }
-                        break;
+                    case 7:
+                    case 12:
+                        return 0;
+                    case 6:
+                    case 8:
+                        return 12;
                     case 2:
                     case 3:
-                        if (Operators.CompareString(this.BienSo, this.BSXeThangQui, false) != 0)
+                        if (Operators.CompareString(BienSo, BSXeThangQui, false) != 0)
                         {
                             return 5;
                         }
-                        if (this.PLXeTruoc == 0)
+                        if (PLXeTruoc == 0)
                         {
                             return 1;
                         }
-                        if (this.PLXeTruoc != this.PLVe)
+                        if (PLXeTruoc != PLVe)
                         {
                             return 3;
                         }
                         return 0;
                     case 4:
+                        if (Operators.CompareString(BienSo, BSXeThangQui, false) != 0)
+                        {
+                            return 14;
+                        }
                         return 0;
-                    case 6:
-                    case 8:
-                        return 12;
-                    case 7:
-                    case 12:
+                    case 1:
+                    case 5:
+                        if (PLXeTruoc == 0)
+                        {
+                            if (Operators.CompareString(BienSo, ModuleKhaiBaoConst.EnumStrNull.BienSoNull, false) == 0)
+                            {
+                                return 2;
+                            }
+                            return 1;
+                        }
+                        if (PLVe != PLXeTruoc)
+                        {
+                            return 3;
+                        }
+                        if ((uint)PLVe < (uint)PLXeSau)
+                        {
+                            return 4;
+                        }
                         return 0;
+                    case 0:
+                        return 8;
                     case 9:
                         return 9;
                     case 11:
                         return 0;
+                    default:
+                        {
+                            byte result = default(byte);
+                            return result;
+                        }
                 }
-                byte result = 0;
-                return result;
             }
         }
 
@@ -132,11 +135,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.SoVe_;
+                return SoVe_;
             }
             set
             {
-                this.SoVe_ = value;
+                SoVe_ = value;
             }
         }
 
@@ -144,11 +147,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.PLXeTruoc_;
+                return PLXeTruoc_;
             }
             set
             {
-                this.PLXeTruoc_ = value;
+                PLXeTruoc_ = value;
             }
         }
 
@@ -156,11 +159,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.PLXeSau_;
+                return PLXeSau_;
             }
             set
             {
-                this.PLXeSau_ = value;
+                PLXeSau_ = value;
             }
         }
 
@@ -168,11 +171,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.PLVe_;
+                return PLVe_;
             }
             set
             {
-                this.PLVe_ = value;
+                PLVe_ = value;
             }
         }
 
@@ -180,11 +183,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.PTTT_;
+                return PTTT_;
             }
             set
             {
-                this.PTTT_ = value;
+                PTTT_ = value;
             }
         }
 
@@ -192,11 +195,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.Phi_;
+                return Phi_;
             }
             set
             {
-                this.Phi_ = value;
+                Phi_ = value;
             }
         }
 
@@ -204,11 +207,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.LanXe_;
+                return LanXe_;
             }
             set
             {
-                this.LanXe_ = value;
+                LanXe_ = value;
             }
         }
 
@@ -216,11 +219,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.NgayQuaTram_;
+                return NgayQuaTram_;
             }
             set
             {
-                this.NgayQuaTram_ = value;
+                NgayQuaTram_ = value;
             }
         }
 
@@ -228,11 +231,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.GioQuaTram_;
+                return GioQuaTram_;
             }
             set
             {
-                this.GioQuaTram_ = value;
+                GioQuaTram_ = value;
             }
         }
 
@@ -240,11 +243,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.CaTruc_;
+                return CaTruc_;
             }
             set
             {
-                this.CaTruc_ = Conversions.ToByte(value);
+                CaTruc_ = Conversions.ToByte(value);
             }
         }
 
@@ -252,11 +255,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.MSNV_;
+                return MSNV_;
             }
             set
             {
-                this.MSNV_ = value;
+                MSNV_ = value;
             }
         }
 
@@ -264,11 +267,11 @@ namespace Tollcabin
         {
             get
             {
-                return this.TenHinhXe_;
+                return TenHinhXe_;
             }
             set
             {
-                this.TenHinhXe_ = value;
+                TenHinhXe_ = value;
             }
         }
 
@@ -276,136 +279,99 @@ namespace Tollcabin
         {
             get
             {
-                return this.BSXeThangQui_;
+                return BSXeThangQui_;
             }
             set
             {
-                this.BSXeThangQui_ = value;
+                BSXeThangQui_ = value;
             }
         }
 
-        public bool Null
-        {
-            get
-            {
-                return Operators.CompareString(this.TenHinhXe, ModuleKhaiBaoConst.EnumStrNull.TenHinhXeNull, false) == 0;
-            }
-        }
+        public bool Null => Operators.CompareString(TenHinhXe, ModuleKhaiBaoConst.EnumStrNull.TenHinhXeNull, false) == 0;
 
         public XeQuaTram()
         {
-            this.DataSend_ = true;
-            this.BienSo = ModuleKhaiBaoConst.EnumStrNull.BienSoNull;
-            this.SoVe = ModuleKhaiBaoConst.EnumStrNull.SoVeNull;
-            this.PLXeTruoc = 0;
-            this.PLXeSau = 0;
-            this.PLVe = 0;
-            this.PTTT = 0;
-            this.Phi = 0L;
-            this.LanXe = 0;
-            this.NgayQuaTram = ModuleKhaiBaoConst.EnumStrNull.NgayQuaTramNull;
-            this.GioQuaTram = ModuleKhaiBaoConst.EnumStrNull.GioQuaTramNull;
-            this.CaTruc = ModuleKhaiBaoConst.EnumNull.PhiNull;
-            this.MSNV = ModuleKhaiBaoConst.EnumStrNull.MSNVNull;
-            this.TenHinhXe = ModuleKhaiBaoConst.EnumStrNull.TenHinhXeNull;
-            this.BSXeThangQui = ModuleKhaiBaoConst.EnumStrNull.BienSoNull;
-            this.DataSend = true;
+            DataSend_ = true;
+            BienSo = ModuleKhaiBaoConst.EnumStrNull.BienSoNull;
+            SoVe = ModuleKhaiBaoConst.EnumStrNull.SoVeNull;
+            PLXeTruoc = 0;
+            PLXeSau = 0;
+            PLVe = 0;
+            PTTT = 0;
+            Phi = 0L;
+            LanXe = 0;
+            NgayQuaTram = ModuleKhaiBaoConst.EnumStrNull.NgayQuaTramNull;
+            GioQuaTram = ModuleKhaiBaoConst.EnumStrNull.GioQuaTramNull;
+            CaTruc = ModuleKhaiBaoConst.EnumNull.PhiNull;
+            MSNV = ModuleKhaiBaoConst.EnumStrNull.MSNVNull;
+            TenHinhXe = ModuleKhaiBaoConst.EnumStrNull.TenHinhXeNull;
+            BSXeThangQui = ModuleKhaiBaoConst.EnumStrNull.BienSoNull;
+            DataSend = true;
         }
 
         public void Reset()
         {
-            this.BienSo = ModuleKhaiBaoConst.EnumStrNull.BienSoNull;
-            this.SoVe = ModuleKhaiBaoConst.EnumStrNull.SoVeNull;
-            this.PLXeTruoc = 0;
-            this.PLXeSau = 0;
-            this.PLVe = 0;
-            this.PTTT = 0;
-            this.Phi = 0L;
-            this.LanXe = 0;
-            this.NgayQuaTram = ModuleKhaiBaoConst.EnumStrNull.NgayQuaTramNull;
-            this.GioQuaTram = ModuleKhaiBaoConst.EnumStrNull.GioQuaTramNull;
-            this.CaTruc = ModuleKhaiBaoConst.EnumNull.PhiNull;
-            this.MSNV = ModuleKhaiBaoConst.EnumStrNull.MSNVNull;
-            this.TenHinhXe = ModuleKhaiBaoConst.EnumStrNull.TenHinhXeNull;
-            this.BSXeThangQui = ModuleKhaiBaoConst.EnumStrNull.BienSoNull;
-            this.DataSend = true;
+            BienSo = ModuleKhaiBaoConst.EnumStrNull.BienSoNull;
+            SoVe = ModuleKhaiBaoConst.EnumStrNull.SoVeNull;
+            PLXeTruoc = 0;
+            PLXeSau = 0;
+            PLVe = 0;
+            PTTT = 0;
+            Phi = 0L;
+            LanXe = 0;
+            NgayQuaTram = ModuleKhaiBaoConst.EnumStrNull.NgayQuaTramNull;
+            GioQuaTram = ModuleKhaiBaoConst.EnumStrNull.GioQuaTramNull;
+            CaTruc = ModuleKhaiBaoConst.EnumNull.PhiNull;
+            MSNV = ModuleKhaiBaoConst.EnumStrNull.MSNVNull;
+            TenHinhXe = ModuleKhaiBaoConst.EnumStrNull.TenHinhXeNull;
+            BSXeThangQui = ModuleKhaiBaoConst.EnumStrNull.BienSoNull;
+            DataSend = true;
         }
 
         public XeQuaTram Paste()
         {
-            return new XeQuaTram
-            {
-                BienSo = this.BienSo,
-                CaTruc = RuntimeHelpers.GetObjectValue(this.CaTruc),
-                GioQuaTram = this.GioQuaTram,
-                LanXe = this.LanXe,
-                MSNV = this.MSNV,
-                NgayQuaTram = this.NgayQuaTram,
-                Phi = this.Phi,
-                PLVe = this.PLVe,
-                PLXeSau = this.PLXeSau,
-                PLXeTruoc = this.PLXeTruoc,
-                PTTT = this.PTTT,
-                SoVe = this.SoVe,
-                TenHinhXe = this.TenHinhXe,
-                BSXeThangQui = this.BSXeThangQui,
-                DataSend = this.DataSend
-            };
+            XeQuaTram xeQuaTram = new XeQuaTram();
+            xeQuaTram.BienSo = BienSo;
+            xeQuaTram.CaTruc = RuntimeHelpers.GetObjectValue(CaTruc);
+            xeQuaTram.GioQuaTram = GioQuaTram;
+            xeQuaTram.LanXe = LanXe;
+            xeQuaTram.MSNV = MSNV;
+            xeQuaTram.NgayQuaTram = NgayQuaTram;
+            xeQuaTram.Phi = Phi;
+            xeQuaTram.PLVe = PLVe;
+            xeQuaTram.PLXeSau = PLXeSau;
+            xeQuaTram.PLXeTruoc = PLXeTruoc;
+            xeQuaTram.PTTT = PTTT;
+            xeQuaTram.SoVe = SoVe;
+            xeQuaTram.TenHinhXe = TenHinhXe;
+            xeQuaTram.BSXeThangQui = BSXeThangQui;
+            xeQuaTram.DataSend = DataSend;
+            return xeQuaTram;
         }
 
         public void Coppy(XeQuaTram Car)
         {
-            this.BienSo = Car.BienSo;
-            this.CaTruc = RuntimeHelpers.GetObjectValue(Car.CaTruc);
-            this.GioQuaTram = Car.GioQuaTram;
-            this.LanXe = Car.LanXe;
-            this.MSNV = Car.MSNV;
-            this.NgayQuaTram = Car.NgayQuaTram;
-            this.Phi = Car.Phi;
-            this.PLVe = Car.PLVe;
-            this.PLXeSau = Car.PLXeSau;
-            this.PLXeTruoc = Car.PLXeTruoc;
-            this.PTTT = Car.PTTT;
-            this.SoVe = Car.SoVe;
-            this.TenHinhXe = Car.TenHinhXe;
-            this.BSXeThangQui = Car.BSXeThangQui;
-            this.DataSend = Car.DataSend;
+            BienSo = Car.BienSo;
+            CaTruc = RuntimeHelpers.GetObjectValue(Car.CaTruc);
+            GioQuaTram = Car.GioQuaTram;
+            LanXe = Car.LanXe;
+            MSNV = Car.MSNV;
+            NgayQuaTram = Car.NgayQuaTram;
+            Phi = Car.Phi;
+            PLVe = Car.PLVe;
+            PLXeSau = Car.PLXeSau;
+            PLXeTruoc = Car.PLXeTruoc;
+            PTTT = Car.PTTT;
+            SoVe = Car.SoVe;
+            TenHinhXe = Car.TenHinhXe;
+            BSXeThangQui = Car.BSXeThangQui;
+            DataSend = Car.DataSend;
         }
 
         public override string ToString()
         {
             string text = "";
-            return string.Concat(new string[]
-            {
-                text,
-                this.BienSo,
-                "#",
-                this.CaTruc.ToString(),
-                "#",
-                this.GioQuaTram,
-                "#",
-                this.LanXe.ToString(),
-                "#",
-                this.MSNV,
-                "#",
-                this.NgayQuaTram,
-                "#",
-                this.Phi.ToString(),
-                "#",
-                this.PLVe.ToString(),
-                "#",
-                this.PLXeSau.ToString(),
-                "#",
-                this.PLXeTruoc.ToString(),
-                "#",
-                this.PTTT.ToString(),
-                "#",
-                this.SoVe.ToString(),
-                "#",
-                this.TenHinhXe.ToString(),
-                "#",
-                this.TTXeQua.ToString()
-            });
+            return text + BienSo + "#" + CaTruc.ToString() + "#" + GioQuaTram + "#" + LanXe.ToString() + "#" + MSNV + "#" + NgayQuaTram + "#" + Phi.ToString() + "#" + PLVe.ToString() + "#" + PLXeSau.ToString() + "#" + PLXeTruoc.ToString() + "#" + PTTT.ToString() + "#" + SoVe.ToString() + "#" + TenHinhXe.ToString() + "#" + TTXeQua.ToString();
         }
     }
 }
