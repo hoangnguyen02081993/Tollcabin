@@ -9,12 +9,13 @@ namespace Tollcabin
 {
     public class ConfigAxis
     {
-        private const string ConfigFileName = "AxisManager.cfg";
+        private string ConfigFileName = "AxisManager.cfg";
 
         public string CameraIp { set; get; }
         public bool IsAutoRun { set; get; }
-        public ConfigAxis()
+        public ConfigAxis(string configFileName = "AxisManager.cfg")
         {
+            ConfigFileName = configFileName;
             CameraIp = "";
             IsAutoRun = false;
             Load();
@@ -46,6 +47,13 @@ namespace Tollcabin
         {
             try
             {
+                string path = ConfigFileName.LastIndexOf("/") == 0 ? Directory.GetCurrentDirectory() :
+                                                     ConfigFileName.Substring(0, ConfigFileName.LastIndexOf("/"));
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
                 XmlDocument xmlDocument = new XmlDocument();
                 XmlElement root = xmlDocument.CreateElement("root");
                 xmlDocument.AppendChild(root);
@@ -60,6 +68,13 @@ namespace Tollcabin
         }
         private void CreateDefaultFile()
         {
+            string path = ConfigFileName.LastIndexOf("/") == 0 ? Directory.GetCurrentDirectory() : 
+                                                                 ConfigFileName.Substring(0, ConfigFileName.LastIndexOf("/"));
+            if(!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
             XmlDocument xmlDocument = new XmlDocument();
             XmlElement root = xmlDocument.CreateElement("root");
             xmlDocument.AppendChild(root);

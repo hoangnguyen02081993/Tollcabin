@@ -9,3 +9,9 @@ E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Infrastructure.cs\o
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Infrastructure.cs\obj\Debug\Infrastructure.cs.csproj.CoreCompileInputs.cache
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Infrastructure.cs\obj\Debug\Infrastructure.cs.dll
 E:\Thu_muc_cua_hoang_cam_ai_dong_vao_ke_ca_hau\git\Tollcabin\Infrastructure.cs\obj\Debug\Infrastructure.cs.pdb
+E:\Working\Project\DY\NghiemThu\Source\Tollcabin-master\Infrastructure.cs\bin\Debug\Infrastructure.cs.dll
+E:\Working\Project\DY\NghiemThu\Source\Tollcabin-master\Infrastructure.cs\bin\Debug\Infrastructure.cs.pdb
+E:\Working\Project\DY\NghiemThu\Source\Tollcabin-master\Infrastructure.cs\obj\Debug\Infrastructure.cs.csprojAssemblyReference.cache
+E:\Working\Project\DY\NghiemThu\Source\Tollcabin-master\Infrastructure.cs\obj\Debug\Infrastructure.cs.csproj.CoreCompileInputs.cache
+E:\Working\Project\DY\NghiemThu\Source\Tollcabin-master\Infrastructure.cs\obj\Debug\Infrastructure.cs.dll
+E:\Working\Project\DY\NghiemThu\Source\Tollcabin-master\Infrastructure.cs\obj\Debug\Infrastructure.cs.pdb

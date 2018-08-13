@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -67,6 +70,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -90,6 +94,10 @@
     <ProjectReference Include="..\CaptureTollCabinLib\CaptureTollCabinLib.csproj">
       <Project>{57ba8699-802e-4177-83cf-4ebfe8f6aacb}</Project>
       <Name>CaptureTollCabinLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.cs\Infrastructure.cs.csproj">
+      <Project>{f9dc4e7f-7864-46cc-9074-4a44dd9edc69}</Project>
+      <Name>Infrastructure.cs</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

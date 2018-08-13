@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Infrastructure.cs.Helpers;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +26,10 @@ namespace AxisCaptureManager
                     MessageBox.Show("Đã có chương trình đang chạy. Không thể mở thêm", "Axis manager - Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+
+                var logRepository = log4net.LogManager.GetRepository(System.Reflection.Assembly.GetEntryAssembly());
+                log4net.Config.XmlConfigurator.Configure(logRepository, new System.IO.FileInfo(Directory.GetCurrentDirectory() + "/log4net.config"));
+                LogHelper.GetLogger().Info("Khởi động chương trình");
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);

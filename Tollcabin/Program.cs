@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using System.Windows.Forms;
@@ -16,10 +17,6 @@ namespace Tollcabin
         [STAThread]
         static void Main()
         {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
-
             try
             {
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -27,6 +24,9 @@ namespace Tollcabin
             finally
             {
             }
+            var logRepository = log4net.LogManager.GetRepository(System.Reflection.Assembly.GetEntryAssembly());
+            log4net.Config.XmlConfigurator.Configure(logRepository, new System.IO.FileInfo(Directory.GetCurrentDirectory() + "/log4net.config"));
+
             MyProject.Application.Run(new string[1]);
         }
     }

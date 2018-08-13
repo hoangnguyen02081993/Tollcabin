@@ -67,7 +67,7 @@
             // 
             this.ntfIco.BalloonTipText = "Chương trình đang chạy trong nền...";
             this.ntfIco.BalloonTipTitle = "Thông báo";
-            this.ntfIco.Text = "hoang pro bla bla bla";
+            this.ntfIco.Text = "Axis capture manager";
             this.ntfIco.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NtfIco_MouseDoubleClick);
             // 
             // BtnExit

@@ -1,4 +1,5 @@
 ﻿using CaptureTollCabinLib;
+using Infrastructure.cs.Helpers;
 using Infrastructure.intefaces;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -254,7 +255,7 @@ namespace Tollcabin
                     ResetForm();
                     try
                     {
-                        this.configAxis = new ConfigAxis();
+                        this.configAxis = new ConfigAxis(Directory.GetCurrentDirectory() + "/axis/AxisManager.cfg");
                         this.configAxis.Load();
                         if (this.CheckNetWork(configAxis.CameraIp))
                         {
@@ -760,6 +761,7 @@ namespace Tollcabin
 
         public void XeVaoVungTu()
         {
+            LogHelper.GetLogger().Info("Xe vào vòng từ");
             this.VideoData.ClearDVR(this.DvrChanel);
             this.ResetForm();
             this.Controller.PhanLoaiXe = 0;
@@ -886,6 +888,7 @@ namespace Tollcabin
 
         public void NhanDangBienSo()
         {
+            LogHelper.GetLogger().Info("Nhận dạng biển số");
             bool flag = true;
             checked
             {
@@ -949,6 +952,7 @@ namespace Tollcabin
 
         public void XuLyXe(string BienSo)
         {
+            LogHelper.GetLogger().Info("Xử lý xe");
             if (LenhNhanDangBienSo)
             {
                 Controller.MoDenHongNgoai = false;
@@ -1048,6 +1052,7 @@ namespace Tollcabin
 
         private void OpenBarrier(int PhanLoaiXe, string strThongTinVe, string strGiaVe)
         {
+            LogHelper.GetLogger().Info("Mở barrier");
             this.PhanLoaiXeVuaQua = PhanLoaiXe;
             this.lbThongTinVeSet(strThongTinVe);
             this.lbGiaVeSet(strGiaVe);
@@ -1073,6 +1078,7 @@ namespace Tollcabin
 
         private void DocMaVach_DataReceive(string Message)
         {
+            LogHelper.GetLogger().Info("Đọc mã vạch. Data receive");
             try
             {
                 if (Operators.CompareString(Message.Substring(0, 4), ModuleKhaiBaoConst.IDMaTram, false) != 0 & Operators.CompareString(Message.Substring(0, 4), ModuleKhaiBaoConst.IDMaTram2, false) != 0)
@@ -1116,6 +1122,7 @@ namespace Tollcabin
 
         public void XuLyQuetVe(string SoVe13Char)
         {
+            LogHelper.GetLogger().Info("Xử lý quét vé");
             XeQuaTram xeQuaTram = new XeQuaTram();
             try
             {
